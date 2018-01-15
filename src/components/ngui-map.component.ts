@@ -202,7 +202,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     if (this.map && this.map[groupName]) {
       let index = this.map[groupName].indexOf(mapObject);
-      console.log('index', mapObject, index);
       (index > -1) && this.map[groupName].splice(index, 1);
     }
   }
