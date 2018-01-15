@@ -30,6 +30,5 @@ export class SimpleMarkerComponent {
     if (event instanceof MouseEvent) {
       return false;
     }
-    console.log('event .... >', event, str);
   }
 }

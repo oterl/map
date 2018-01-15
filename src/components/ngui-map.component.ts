@@ -110,7 +110,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
 
     this.initializeMapAfterDisplayed = false;
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('ngui-map mapOptions', this.mapOptions);
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);

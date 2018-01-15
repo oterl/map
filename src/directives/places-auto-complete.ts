@@ -37,7 +37,6 @@ export class PlacesAutoComplete {
   initialize = (): void => {
     this.objectOptions =
       this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], this);
-    console.log('places autocomplete options', this.objectOptions);
 
     if (!google.maps.places) {
       throw missingLibraryError('PlacesAutoComplete', 'places');
@@ -47,7 +46,6 @@ export class PlacesAutoComplete {
       this.elementRef.nativeElement,
       this.objectOptions
     );
-    console.log('this.autocomplete', this.autocomplete);
 
     this.autocomplete.addListener('place_changed', place => {
       this.place_changed.emit(this.autocomplete.getPlace());

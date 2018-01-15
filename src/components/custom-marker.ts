@@ -161,7 +161,6 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   }
 
   private initialize(): void {
-    console.log('custom-marker is being initialized');
     this.el = this.elementRef.nativeElement;
 
     this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
