@@ -27,7 +27,6 @@ import { SourceCodeService } from '../source-code.service';
       position: absolute;
       background-color: #fff;
       border: 1px solid #999;
-      font-family: 'Roboto','sans-serif';
       left: 25%;
       line-height: 30px;
       padding: 5px;
