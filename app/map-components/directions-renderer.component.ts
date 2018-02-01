@@ -1,4 +1,9 @@
-import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    OnInit,
+    ViewChild
+    } from '@angular/core';
 import { DirectionsRenderer } from '@ngui/map';
 import { SourceCodeService } from '../source-code.service';
 

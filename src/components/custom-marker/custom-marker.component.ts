@@ -9,14 +9,14 @@ import {
     Output,
     SimpleChanges
     } from '@angular/core';
-import { CustomMarkerOverlayViewService } from 'components/custom-marker/services/custom-marker-overlay-view.service';
-import { NguiMapComponent } from 'components/ngui-map.component';
 import {
     debounceTime,
     takeUntil
     } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { MapService } from 'services/ngui-map';
+import { MapService } from '../../services/ngui-map';
+import { CustomMarkerOverlayViewService } from '../custom-marker/services/custom-marker-overlay-view.service';
+import { NguiMapComponent } from '../ngui-map.component';
 
 const INPUTS = [
     'position'

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CustomMarkerOverlayView } from 'components/custom-marker/mixins/custom-marker-overlay-view.mixin';
 import { ReplaySubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import {
@@ -7,6 +6,7 @@ import {
     first
     } from 'rxjs/operators';
 import { MapLoadedService } from '../../../services/map-loaded.service';
+import { CustomMarkerOverlayView } from '../mixins/custom-marker-overlay-view.mixin';
 
 @Injectable()
 export class CustomMarkerOverlayViewService {

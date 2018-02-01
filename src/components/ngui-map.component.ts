@@ -11,7 +11,6 @@ import {
     SimpleChanges,
     ViewEncapsulation
     } from '@angular/core';
-import { CustomMarkerOverlayViewService } from 'components/custom-marker/services/custom-marker-overlay-view.service';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { Subject } from 'rxjs/Subject';
 import { NgMapApiLoader } from '../services/api-loader';
@@ -21,6 +20,7 @@ import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { MapService } from '../services/ngui-map';
 import { OptionBuilder } from '../services/option-builder';
 import { toCamelCase } from '../services/util';
+import { CustomMarkerOverlayViewService } from './custom-marker/services/custom-marker-overlay-view.service';
 import { InfoWindow } from './info-window';
 
 const INPUTS = [

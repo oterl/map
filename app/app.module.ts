@@ -1,17 +1,23 @@
+import {
+    HashLocationStrategy,
+    LocationStrategy
+    } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { NguiUtilsModule } from '@ngui/utils';
+import { BrowserModule } from '@angular/platform-browser';
 import { NguiMapModule } from '@ngui/map';
+import { NguiUtilsModule } from '@ngui/utils';
+import { AppComponent } from './app.component';
+import {
+    APP_ROUTER_COMPONENTS,
+    APP_ROUTER_PROVIDERS
+    } from './app.route';
 import { SourceCodeService } from './source-code.service';
 
-import { AppComponent } from './app.component';
+
 // import { Codeblock } from 'ng2-prism/codeblock';
 
-import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
 
 @NgModule({
     imports: [
