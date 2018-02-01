@@ -91,11 +91,12 @@ export class CustomMarkerComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnDestroy() {
         // this._inputChange.complete();
+        this._markerOverlay.setMap(null);
         this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this._markerOverlay);
 
-        if (this._markerOverlay) {
-            this._mapService.clearObjectEvents(OUTPUTS, this, 'mapObject');
-        }
+        // if (this._markerOverlay) {
+        //     this._mapService.clearObjectEvents(OUTPUTS, this, 'mapObject');
+        // }
     }
 
     private _init(): void {
