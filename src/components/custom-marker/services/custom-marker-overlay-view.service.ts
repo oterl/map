@@ -6,7 +6,7 @@ import {
     filter,
     first
     } from 'rxjs/operators';
-import { MapLoadedService } from 'services/map-loaded.service';
+import { MapLoadedService } from '../../../services/map-loaded.service';
 
 @Injectable()
 export class CustomMarkerOverlayViewService {

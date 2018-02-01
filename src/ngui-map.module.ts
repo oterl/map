@@ -3,8 +3,8 @@ import {
     ModuleWithProviders,
     NgModule
     } from '@angular/core';
-import { CustomMarkerComponent } from 'components/custom-marker/custom-marker.component';
 import { CustomMarkerDemoComponent } from '../app/map-components/custom-marker-demo.component';
+import { CustomMarkerComponent } from './components/custom-marker/custom-marker.component';
 import { InfoWindow } from './components/info-window';
 import { NguiMapComponent } from './components/ngui-map.component';
 import { BicyclingLayer } from './directives/bicycling-layer';
