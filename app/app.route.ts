@@ -1,32 +1,35 @@
-import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { SimpleInfoWindowComponent } from './map-components/simple-info-window.component';
-import { SimpleMapComponent } from './map-components/simple-map.component';
-import { SimpleCircleComponent } from './map-components/simple-circle.component';
-import { SimpleMarkerComponent } from './map-components/simple-marker.component';
-import { MarkerNgForComponent } from './map-components/marker-ng-for.component';
-import { MultipleMapComponent } from './map-components/multiple-map.component';
-import { PolygonComponent } from './map-components/polygon.component';
-import { MapWithOptionsComponent } from './map-components/map-with-options.component';
-import { SimplePolylineComponent } from './map-components/simple-polyline.component';
-import { SimpleGroundOverlayComponent } from './map-components/simple-ground-overlay.component';
+import {
+    RouterModule,
+    Routes
+    } from '@angular/router';
 import { BicyclingLayerComponent } from './map-components/bicycling-layer.component';
-import { TrafficLayerComponent } from './map-components/traffic-layer.component';
-import { TransitLayerComponent } from './map-components/transit-layer.component';
-import { HeatmapLayerComponent } from './map-components/heatmap-layer.component';
-import { KmlLayerComponent } from './map-components/kml-layer.component';
+import { CustomMarkerDemoComponent } from './map-components/custom-marker-demo.component';
+import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
 import { DataLayerComponent } from './map-components/data-layer.component';
-import { StreetViewPanoramaComponent } from './map-components/street-view-panorama.component';
-import { PlacesAutoCompleteComponent } from './map-components/places-auto-complete.component';
 import { DirectionsRendererComponent } from './map-components/directions-renderer.component';
 import { DrawingManagerComponent } from './map-components/drawing-manager.component';
 import { EventArgumentsComponent } from './map-components/event-arguments.component';
-import { CustomMarkerComponent } from './map-components/custom-marker.component';
-import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
-import { MapWithStreetviewComponent } from './map-components/map-with-streetview.component';
-import { MapChangeMultiplePropertiesComponent } from './map-components/map-change-multiple-properties.component';
-import { MarkerWithCustomIconComponent } from './map-components/marker-with-custom-icon.component';
 import { ExperimentComponent } from './map-components/experiment.component';
+import { HeatmapLayerComponent } from './map-components/heatmap-layer.component';
+import { KmlLayerComponent } from './map-components/kml-layer.component';
+import { MapChangeMultiplePropertiesComponent } from './map-components/map-change-multiple-properties.component';
+import { MapWithOptionsComponent } from './map-components/map-with-options.component';
+import { MapWithStreetviewComponent } from './map-components/map-with-streetview.component';
+import { MarkerNgForComponent } from './map-components/marker-ng-for.component';
+import { MarkerWithCustomIconComponent } from './map-components/marker-with-custom-icon.component';
+import { MultipleMapComponent } from './map-components/multiple-map.component';
+import { PlacesAutoCompleteComponent } from './map-components/places-auto-complete.component';
+import { PolygonComponent } from './map-components/polygon.component';
+import { SimpleCircleComponent } from './map-components/simple-circle.component';
+import { SimpleGroundOverlayComponent } from './map-components/simple-ground-overlay.component';
+import { SimpleInfoWindowComponent } from './map-components/simple-info-window.component';
+import { SimpleMapComponent } from './map-components/simple-map.component';
+import { SimpleMarkerComponent } from './map-components/simple-marker.component';
+import { SimplePolylineComponent } from './map-components/simple-polyline.component';
+import { StreetViewPanoramaComponent } from './map-components/street-view-panorama.component';
+import { TrafficLayerComponent } from './map-components/traffic-layer.component';
+import { TransitLayerComponent } from './map-components/transit-layer.component';
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -53,7 +56,7 @@ export const routes: Routes = [
   { path: 'traffic-layer', component: TrafficLayerComponent },
   { path: 'transit-layer', component: TransitLayerComponent },
   { path: 'event-arguments', component: EventArgumentsComponent },
-  { path: 'custom-marker', component: CustomMarkerComponent },
+  { path: 'custom-marker', component: CustomMarkerDemoComponent },
   { path: 'custom-marker-ng-for', component: CustomMarkerNgForComponent },
   { path: 'experiment', component: ExperimentComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
@@ -61,6 +64,7 @@ export const routes: Routes = [
 
 export const APP_ROUTER_PROVIDERS: ModuleWithProviders = RouterModule.forRoot(routes);
 export const APP_ROUTER_COMPONENTS = [
+CustomMarkerDemoComponent,
   BicyclingLayerComponent,
   DataLayerComponent,
   DirectionsRendererComponent,
@@ -84,7 +88,7 @@ export const APP_ROUTER_COMPONENTS = [
   StreetViewPanoramaComponent,
   TrafficLayerComponent,
   TransitLayerComponent,
-  CustomMarkerComponent,
+  CustomMarkerDemoComponent,
   CustomMarkerNgForComponent,
   MarkerWithCustomIconComponent,
   ExperimentComponent

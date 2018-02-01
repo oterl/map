@@ -36,6 +36,8 @@
     "map"
   ],
   "dependencies": {
+    "@angular/animations": "^5.0.0",
+    "@angular/platform-server": "^5.0.0",
     "tslib": "^1.7.1"
   },
   "peerDependencies": {
@@ -43,15 +45,15 @@
   },
   "devDependencies": {
     "@angular/cli": "^1.5.4",
-    "@angular/common": "4.4.4",
-    "@angular/compiler": "4.4.4",
-    "@angular/compiler-cli": "4.4.4",
-    "@angular/core": "4.4.4",
-    "@angular/forms": "4.4.4",
-    "@angular/http": "4.4.4",
-    "@angular/platform-browser": "4.4.4",
-    "@angular/platform-browser-dynamic": "4.4.4",
-    "@angular/router": "4.4.4",
+    "@angular/common": "^5.0.0",
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "@angular/core": "^5.0.0",
+    "@angular/forms": "^5.0.0",
+    "@angular/http": "^5.0.0",
+    "@angular/platform-browser": "^5.0.0",
+    "@angular/platform-browser-dynamic": "^5.0.0",
+    "@angular/router": "^5.0.0",
     "@ngui/utils": "^0.8.1",
     "@types/googlemaps": "^3.30.0",
     "@types/hammerjs": "^2.0.34",
@@ -67,7 +69,7 @@
     "rimraf": "^2.6.1",
     "rxjs": "^5.5.2",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
+    "typescript": "2.4.2",
     "webtest": "^0.3.8",
     "zone.js": "^0.8.18"
   }

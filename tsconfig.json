@@ -13,7 +13,8 @@
     "paths": {
       "@ngui/map": ["./index"],
       // workaround for https://github.com/ng2-ui/utils/issues/5
-      "@ngui/utils": ["../node_modules/@ngui/utils/src/index.ts"]
+      "@ngui/utils": ["../node_modules/@ngui/utils/src/index.ts"],
+      "@angular/*": ["../node_modules/@angular/*"]
     },
     "typeRoots": [
       "./node_modules/@types"

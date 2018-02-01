@@ -1,14 +1,18 @@
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  SimpleChanges,
-  ViewChild, ViewContainerRef,
-  Output, OnInit, OnChanges, OnDestroy
-} from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+    Component,
+    ElementRef,
+    EventEmitter,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewContainerRef
+    } from '@angular/core';
 import { debounceTime } from 'rxjs/operator/debounceTime';
-import { NguiMap } from '../services/ngui-map';
+import { Subject } from 'rxjs/Subject';
+import { MapService } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
 
 const INPUTS = [
@@ -34,7 +38,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private elementRef: ElementRef,
-    private nguiMap: NguiMap,
+    private nguiMap: MapService,
     private nguiMapComponent: NguiMapComponent,
   ) {
     this.elementRef.nativeElement.style.display = 'none';

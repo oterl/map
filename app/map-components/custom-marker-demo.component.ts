@@ -16,11 +16,11 @@ import { SourceCodeService } from '../source-code.service';
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
-
-export class CustomMarkerComponent {
+  `
+})
+export class CustomMarkerDemoComponent {
   code: string;
   constructor(public sc: SourceCodeService) {
-    sc.getText('CustomMarkerComponent').subscribe(text => this.code = text);
+    sc.getText('CustomMarkerComponent').subscribe(text => (this.code = text));
   }
 }

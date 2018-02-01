@@ -6,7 +6,6 @@ export { NgMapApiLoader, NgMapAsyncApiLoader, NgMapAsyncCallbackApiLoader } from
 
 export { NguiMapComponent } from './components/ngui-map.component';
 export { InfoWindow } from './components/info-window';
-export { CustomMarker } from './components/custom-marker';
 
 export { Circle } from './directives/circle';
 export { DataLayer } from './directives/data-layer';
@@ -17,7 +16,7 @@ export { GroundOverlay } from './directives/ground-overlay';
 export { HeatmapLayer } from './directives/heatmap-layer';
 export { KmlLayer } from './directives/kml-layer';
 export { Marker } from './directives/marker';
-export { NguiMap } from './services/ngui-map';
+export { MapService } from './services/ngui-map';
 export { PlacesAutoComplete } from './directives/places-auto-complete';
 export { Polygon } from './directives/polygon';
 export { Polyline } from './directives/polyline';

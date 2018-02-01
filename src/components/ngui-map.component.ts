@@ -1,46 +1,109 @@
 import {
-  Component,
-  ElementRef,
-  ViewEncapsulation,
-  EventEmitter,
-  SimpleChanges,
-  Output,
-  NgZone,
-  AfterViewInit, AfterViewChecked, OnChanges, OnDestroy
-} from '@angular/core';
-
-import { OptionBuilder } from '../services/option-builder';
-import { NavigatorGeolocation } from '../services/navigator-geolocation';
-import { GeoCoder } from '../services/geo-coder';
-import { NguiMap } from '../services/ngui-map';
-import { NgMapApiLoader } from '../services/api-loader';
-import { InfoWindow } from './info-window';
-import { Subject } from 'rxjs/Subject';
+    AfterViewChecked,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    EventEmitter,
+    NgZone,
+    OnChanges,
+    OnDestroy,
+    Output,
+    SimpleChanges,
+    ViewEncapsulation
+    } from '@angular/core';
+import { CustomMarkerOverlayViewService } from 'components/custom-marker/services/custom-marker-overlay-view.service';
 import { debounceTime } from 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs/Subject';
+import { MapLoadedService } from 'services/map-loaded.service';
+import { NgMapApiLoader } from '../services/api-loader';
+import { GeoCoder } from '../services/geo-coder';
+import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import { MapService } from '../services/ngui-map';
+import { OptionBuilder } from '../services/option-builder';
 import { toCamelCase } from '../services/util';
+import { InfoWindow } from './info-window';
 
 const INPUTS = [
-  'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
-  'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
-  'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
-  'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'zoomControlOptions', 'mapTypeControlOptions',
-  'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions', 'fullscreenControl', 'fullscreenControlOptions',
+  'backgroundColor',
+  'center',
+  'disableDefaultUI',
+  'disableDoubleClickZoom',
+  'draggable',
+  'draggableCursor',
+  'draggingCursor',
+  'fullscreenControl',
+  'fullscreenControlOptions',
+  'geoFallbackCenter',
+  'heading',
+  'keyboardShortcuts',
+  'mapMaker',
+  'mapTypeControl',
+  'mapTypeControlOptions',
+  'mapTypeId',
+  'maxZoom',
+  'minZoom',
+  'noClear',
   'options',
+  'overviewMapControl',
+  'overviewMapControlOptions',
+  'panControl',
+  'panControlOptions',
+  'rotateControl',
+  'rotateControlOptions',
+  'scaleControl',
+  'scaleControlOptions',
+  'scrollwheel',
+  'streetView',
+  'streetViewControl',
+  'streetViewControlOptions',
+  'styles',
+  'tilt',
+  'zoom',
+  'zoomControl',
+  'zoomControlOptions',
   // ngui-map-specific inputs
-  'geoFallbackCenter'
 ];
 
 const OUTPUTS = [
-  'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
-  'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
-  'tilesloaded', 'tile_changed', 'zoom_changed',
+  'bounds_changed',
+  'center_changed',
+  'click',
+  'dblclick',
+  'drag',
+  'dragend',
+  'dragstart',
+  'heading_changed',
+  'idle',
+  'typeid_changed',
+  'mousemove',
+  'mouseout',
+  'mouseover',
+  'projection_changed',
+  'resize',
+  'rightclick',
+  'tilesloaded',
+  'tile_changed',
+  'zoom_changed',
   // to avoid DOM event conflicts
-  'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
+  'mapClick',
+  'mapMouseover',
+  'mapMouseout',
+  'mapMousemove',
+  'mapDrag',
+  'mapDragend',
+  'mapDragstart'
 ];
 
 @Component({
   selector: 'ngui-map',
-  providers: [NguiMap, OptionBuilder, GeoCoder, NavigatorGeolocation],
+  providers: [
+    MapService,
+    OptionBuilder,
+    GeoCoder,
+    NavigatorGeolocation,
+    MapLoadedService,
+    CustomMarkerOverlayViewService
+],
   styles: [`
     ngui-map {display: block; height: 300px;}
     .google-map {width: 100%; height: 100%}
@@ -76,9 +139,10 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     public elementRef: ElementRef,
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
-    public nguiMap: NguiMap,
+    public nguiMap: MapService,
     public apiLoader: NgMapApiLoader,
     public zone: NgZone,
+    private readonly _mapLoadedService: MapLoadedService
   ) {
     apiLoader.load();
 
@@ -130,6 +194,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
           this.mapIdledOnce = true;
           setTimeout(() => { // Why????, subsribe and emit must not be in the same cycle???
             this.mapReady$.emit(this.map);
+            this._mapLoadedService.loaded();
           });
         }
       });
@@ -198,6 +263,8 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     this.map[groupName].push(mapObject);
   }
 
+  // TODO:
+  // Why not just use mapObject.setMap(null);
   removeFromMapObjectGroup(mapObjectName: string, mapObject: any) {
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     if (this.map && this.map[groupName]) {

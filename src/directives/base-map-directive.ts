@@ -1,9 +1,16 @@
-import {EventEmitter, SimpleChanges, Output, OnInit, OnChanges, OnDestroy} from '@angular/core';
-
-import { OptionBuilder } from '../services/option-builder';
-import { NguiMap } from '../services/ngui-map';
+import {
+    EventEmitter,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
+    } from '@angular/core';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { MapService } from '../services/ngui-map';
+import { OptionBuilder } from '../services/option-builder';
 import { missingLibraryError } from '../services/util';
+
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
@@ -11,7 +18,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   public mapObject: any; // e.g. google.maps.Marker
   public objectOptions: any; // e.g. google.maps.MarkerOptions
 
-  public nguiMap: NguiMap;
+  public nguiMap: MapService;
   public optionBuilder: OptionBuilder;
   public libraryName: string;
   protected _subscriptions = [];
