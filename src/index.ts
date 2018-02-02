@@ -2,7 +2,7 @@ export { BicyclingLayer } from './directives/bicycling-layer';
 export { NavigatorGeolocation } from './services/navigator-geolocation';
 export { OptionBuilder } from './services/option-builder';
 export { NG_MAP_CONFIG_TOKEN, ConfigOption } from './services/config';
-export { NgMapApiLoader, NgMapAsyncApiLoader, NgMapAsyncCallbackApiLoader } from './services/api-loader';
+export { NgMapApiLoader, NgMapAsyncApiLoader } from './services/api-loader';
 
 export { NguiMapComponent } from './components/ngui-map.component';
 export { InfoWindow } from './components/info-window';

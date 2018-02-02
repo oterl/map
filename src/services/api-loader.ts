@@ -1,82 +1,125 @@
-import { Injectable, Inject, Optional, NgZone, OnDestroy } from '@angular/core';
+import {
+    Inject,
+    Injectable,
+    NgZone,
+    OnDestroy,
+    Optional
+    } from '@angular/core';
+import { first } from 'rxjs/operator/first';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { NG_MAP_CONFIG_TOKEN } from './config';
-import { isMapsApiLoaded } from './util';
-import { first } from 'rxjs/operator/first';
+import {
+    isMapsApiLoaded,
+    loadScript
+    } from './util';
+
+type MapLoadConfig = {
+    apiUrl: string;
+};
 
 export abstract class NgMapApiLoader implements OnDestroy {
-  api$: ReplaySubject<any> = first.call(new ReplaySubject(1));
-  abstract load();
+    api$: ReplaySubject<any> = first.call(new ReplaySubject(1));
 
-  constructor(protected config) {
-    this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
-  }
-
-  ngOnDestroy() {
-    this.api$.complete();
-  }
-}
-
-@Injectable()
-export class NgMapAsyncCallbackApiLoader extends NgMapApiLoader {
-  constructor(protected zone: NgZone, @Optional() @Inject(NG_MAP_CONFIG_TOKEN) config) {
-    super(config);
-  }
-
-  load() {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    if (isMapsApiLoaded()) {
-      this.api$.next(google.maps);
-    } else if (!document.querySelector('#ngui-map-api')) {
-      (<any>window)['nguiMapRef'] = (<any>window)['nguiMapRef'] || [];
-      (<any>window)['nguiMapRef'].push({ zone: this.zone, componentFn: () => this.api$.next(google.maps)});
-      this.addGoogleMapsApi();
-    }
-  }
-
-  private addGoogleMapsApi() {
-    (<any>window)['initNguiMap'] = (<any>window)['initNguiMap'] || function() {
-      (<any>window)['nguiMapRef'].forEach(nguiMapRef => {
-        nguiMapRef.zone.run(function() { nguiMapRef.componentFn(); });
-      });
-      (<any>window)['nguiMapRef'].splice(0, (<any>window)['nguiMapRef'].length);
+    private readonly defaultConf = {
+        apiUrl: 'https://maps.google.com/maps/api/js'
     };
 
-    let script = document.createElement( 'script' );
-    script.id = 'ngui-map-api';
+    abstract load(): void;
 
-    // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
-    let apiUrl = this.config.apiUrl ;
-    apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-    script.src = apiUrl + 'callback=initNguiMap';
-    document.querySelector('body').appendChild(script);
-  }
+    constructor(
+        protected config: MapLoadConfig
+    ) {
+        this.config = { ...this.defaultConf, ...this.config};
+    }
+
+    ngOnDestroy() {
+        this.api$.complete();
+    }
 }
+
+// #region Not used anymore
+// @Injectable()
+// export class NgMapAsyncCallbackApiLoader extends NgMapApiLoader {
+//     readonly scriptLoadedCallback: string = 'mapDownloaded';
+//     readonly scriptElementId: string = 'ngui-map-api';
+//     readonly scriptElementSelector: string = `#${this.scriptElementId}`;
+
+//     constructor(
+//         protected _zone: NgZone,
+//         @Optional() @Inject(NG_MAP_CONFIG_TOKEN) config
+//     ) {
+//         super(config);
+//     }
+
+//     load() {
+//         if (typeof window === 'undefined') {
+//             return;
+//         }
+
+//         if (isMapsApiLoaded()) {
+//             this.api$.next(google.maps);
+//             return;
+//         }
+
+//         if (!document.querySelector(this.scriptElementSelector)) {
+//             (<any>window)['nguiMapRef'] = (<any>window)['nguiMapRef'] || [];
+//             (<any>window)['nguiMapRef'].push({
+//                 zone: this._zone,
+//                 provideApiCallback: () => this.api$.next(google.maps)
+//             });
+//             this.addGoogleMapsApi();
+//         }
+//     }
+
+//     private addGoogleMapsApi() {
+//         (<any>window)[this.scriptLoadedCallback] =
+//             (<any>window)[this.scriptLoadedCallback] ||
+//                 function() {
+//                     (<any>window)['nguiMapRef'].forEach(nguiMapRef => {
+//                         nguiMapRef.zone.run(function() {
+//                             nguiMapRef.provideApiCallback();
+//                         });
+//                     });
+//                     (<any>window)['nguiMapRef'].splice(
+//                         0,
+//                         (<any>window)['nguiMapRef'].length
+//                     );
+//                 };
+
+//         const script = document.createElement('script');
+
+//         let apiUrl = this.config.apiUrl;
+//         apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
+//         script.src = `${apiUrl}callback=${this.scriptLoadedCallback}`;
+//         document.querySelector('body').appendChild(script);
+//     }
+// }
+// #endregion
 
 @Injectable()
 export class NgMapAsyncApiLoader extends NgMapApiLoader {
-  constructor(@Optional() @Inject(NG_MAP_CONFIG_TOKEN) config) {
-    super(config);
-  }
+    readonly scriptId = 'googleMaps';
 
-  load() {
-    if (typeof window === 'undefined') {
-      return;
+    constructor(
+        @Optional()
+        @Inject(NG_MAP_CONFIG_TOKEN)
+        config
+    ) {
+        super(config);
     }
 
-    if (isMapsApiLoaded()) {
-      this.api$.next(google.maps);
-    } else if (!document.querySelector('#ngui-map-api')) {
-      let script = document.createElement('script');
-      script.id = 'ngui-map-api';
+    load() {
+        if (isMapsApiLoaded()) {
+            this.apiLoaded();
+        }
 
-      script.async = true;
-      script.onload = () => this.api$.next(google.maps);
-      script.src = this.config.apiUrl;
-      document.querySelector('body').appendChild(script);
+        return loadScript(this.config.apiUrl, this.scriptId, window)
+            .subscribe((loaded: boolean) => {
+                if (loaded) this.apiLoaded();
+            });
     }
-  }
+
+    private apiLoaded() {
+        this.api$.next(google.maps);
+    }
 }

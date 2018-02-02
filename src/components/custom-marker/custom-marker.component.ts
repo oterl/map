@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import {
     debounceTime,
     takeUntil
@@ -16,46 +17,47 @@ import {
     Output,
     } from '@angular/core';
 
-const INPUTS = [
-    'position'
-];
+// const INPUTS = [
+//     'position'
+// ];
 // to avoid DOM event conflicts map_*
-const OUTPUTS = [
-    'animationChanged',
-    'click',
-    'clickableChanged',
-    'cursorChanged',
-    'dblclick',
-    'drag',
-    'dragend',
-    'draggableChanged',
-    'dragstart',
-    'flatChanged',
-    'iconChanged',
-    'map_click',
-    'map_drag',
-    'map_dragend',
-    'map_mousedown',
-    'map_mouseout',
-    'map_mouseover',
-    'map_mouseup',
-    'mousedown',
-    'mouseout',
-    'mouseover',
-    'mouseup',
-    'positionChanged',
-    'rightclick',
-    'shapeChanged',
-    'titleChanged',
-    'visibleChanged',
-    'zindexChanged'
-];
+// const OUTPUTS = [
+//     'animationChanged',
+//     'click',
+//     'clickableChanged',
+//     'cursorChanged',
+//     'dblclick',
+//     'drag',
+//     'dragend',
+//     'draggableChanged',
+//     'dragstart',
+//     'flatChanged',
+//     'iconChanged',
+//     'map_click',
+//     'map_drag',
+//     'map_dragend',
+//     'map_mousedown',
+//     'map_mouseout',
+//     'map_mouseover',
+//     'map_mouseup',
+//     'mousedown',
+//     'mouseout',
+//     'mouseover',
+//     'mouseup',
+//     'positionChanged',
+//     'rightclick',
+//     'shapeChanged',
+//     'titleChanged',
+//     'visibleChanged',
+//     'zindexChanged'
+// ];
 
 @Component({
     selector: 'ngui-map > custom-marker',
     // inputs: INPUTS,
     // outputs: OUTPUTS,
     templateUrl: './custom-marker.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomMarkerComponent implements OnInit, OnDestroy {
     @Output() initialized: EventEmitter<any> = new EventEmitter();
@@ -69,11 +71,11 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly _customMarkerOverlayViewService: CustomMarkerOverlayViewService,
-        private nguiMapComponent: NguiMapComponent,
-        private elementRef: ElementRef,
-        private _mapService: MapService
+        private readonly _nguiMapComponent: NguiMapComponent,
+        private readonly _elementRef: ElementRef,
+        private readonly _mapService: MapService
     ) {
-        this.elementRef.nativeElement.style.display = 'none';
+        this._elementRef.nativeElement.style.display = 'none';
         // OUTPUTS.forEach(output => this[output] = new EventEmitter());
     }
 
@@ -98,13 +100,13 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
     }
 
     private _init(): void {
-        this._el = this.elementRef.nativeElement;
+        this._el = this._elementRef.nativeElement;
 
         this._markerOverlay = new this._customMarkerOverlayViewService.CustomMarkerOverlayView(
             this._el, this['position']
         );
 
-        this._markerOverlay.setMap(this.nguiMapComponent.map);
+        this._markerOverlay.setMap(this._nguiMapComponent.map);
 
         // set google events listeners and emits to this outputs listeners
         // TODO: I dont this this is needed

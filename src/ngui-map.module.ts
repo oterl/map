@@ -23,7 +23,7 @@ import { TrafficLayer } from './directives/traffic-layer';
 import { TransitLayer } from './directives/transit-layer';
 import {
     NgMapApiLoader,
-    NgMapAsyncCallbackApiLoader
+    NgMapAsyncApiLoader
     } from './services/api-loader';
 import {
     ConfigOption,
@@ -65,7 +65,7 @@ const COMPONENTS_DIRECTIVES = [
     NavigatorGeolocation,
     MapService,
     OptionBuilder,
-    { provide: NgMapApiLoader, useClass: NgMapAsyncCallbackApiLoader }
+    { provide: NgMapApiLoader, useClass: NgMapAsyncApiLoader }
   ]
 })
 export class NguiMapModule {

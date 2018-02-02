@@ -1,3 +1,8 @@
+import { isNil as isNilR } from 'ramda';
+import { Observer } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { window } from 'rxjs/operator/window';
+
 /**
  * return json string from json-like string
  */
@@ -49,6 +54,8 @@ export interface IJson {
 
 /**
  * Returns camel-cased from string 'Foo Bar' to 'fooBar'
+ *
+ * @param str string to convert
  */
 export function toCamelCase(str: string): string {
   return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
@@ -56,6 +63,9 @@ export function toCamelCase(str: string): string {
   }).replace(/\s+/g, '');
 }
 
+/**
+ * Checks if global google.maps object is defined
+ */
 export function isMapsApiLoaded() {
   return typeof google === 'object' && typeof google.maps === 'object';
 }
@@ -68,3 +78,59 @@ export function missingLibraryError(component, libName) {
       })
   `);
 }
+
+/**
+ * Loads script by url
+ * @param url Url of script
+ * @param scriptId Unique identificator of script - this will add id to script
+ *                 element, also will be used to store script load state in window
+ *                 object
+ * @param window Window object
+ * @returns Observable that emits when script is loaded, throws an error in case
+ *          it is not possible to determine script load state
+ */
+export const loadScript = (
+    url: string,
+    scriptId: string,
+    window,
+    loadedObjKey = 'loadedScripts'
+): Observable<any> => {
+    if (typeof window === 'undefined') {
+        return Observable.throw(
+            new Error('"window" has to be defined to load script')
+        );
+    }
+
+    window[loadedObjKey] = window[loadedObjKey] || {};
+    const storage = window[loadedObjKey];
+
+    if (document.querySelector(`#${scriptId}`)) {
+        const scriptState = storage[scriptId];
+
+        if (isNilR(scriptState)) {
+            Observable.throw(new Error('Can not determine state of script loading'));
+        }
+
+        return Observable.of(scriptState);
+    }
+
+    // Set target script as not loaded
+    storage[scriptId] = false;
+
+    return Observable.create((observer: Observer<boolean>) => {
+
+        // #region Creation of script element
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.async = true;
+        script.onload = () => {
+            storage[scriptId] = true;
+            observer.next(true);
+            observer.complete();
+        };
+        script.src = url;
+        // #endregion
+
+        document.querySelector('body').appendChild(script);
+    });
+};
