@@ -5,7 +5,7 @@ import {
     map,
     tap
     } from 'rxjs/operators';
-import { loadScript } from 'services/util';
+import { loadScript } from '../services/util';
 
 @Injectable()
 export class MarkerClustererProviderService {
