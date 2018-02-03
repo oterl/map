@@ -16,6 +16,7 @@ import { Subject } from 'rxjs/Subject';
 import { NgMapApiLoader } from '../services/api-loader';
 import { GeoCoder } from '../services/geo-coder';
 import { MapLoadedService } from '../services/map-loaded.service';
+import { MarkerClustererProviderService } from '../services/marker-clusterer-provider.service';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { MapService } from '../services/ngui-map';
 import { OptionBuilder } from '../services/option-builder';
@@ -102,7 +103,8 @@ const OUTPUTS = [
     GeoCoder,
     NavigatorGeolocation,
     MapLoadedService,
-    CustomMarkerOverlayViewService
+    CustomMarkerOverlayViewService,
+    MarkerClustererProviderService
 ],
   styles: [`
     ngui-map {display: block; height: 300px;}

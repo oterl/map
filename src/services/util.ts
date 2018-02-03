@@ -123,12 +123,13 @@ export const loadScript = (
         const script = document.createElement('script');
         script.id = scriptId;
         script.async = true;
+        script.src = url;
+        script.type = 'text/javascript';
         script.onload = () => {
             storage[scriptId] = true;
             observer.next(true);
             observer.complete();
         };
-        script.src = url;
         // #endregion
 
         document.querySelector('body').appendChild(script);

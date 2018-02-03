@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import {
     debounceTime,
     takeUntil
@@ -52,6 +53,8 @@ import {
 //     'zindexChanged'
 // ];
 
+
+// TODO: should be directive
 @Component({
     selector: 'ngui-map > custom-marker',
     // inputs: INPUTS,
@@ -63,10 +66,13 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
     @Output() initialized: EventEmitter<any> = new EventEmitter();
 
     @Input() position: any;
+    @Input() attachToParentMap: boolean = true;
+
+    intialized$ = new Subject();
+    overlay: any;
 
     // private _inputChange: Subject<SimpleChanges> = new Subject<SimpleChanges>();
     private _el: HTMLElement;
-    private _markerOverlay: any;
     private readonly _destroyed$ = new Subject();
 
     constructor(
@@ -91,7 +97,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         // this._inputChange.complete();
-        this._markerOverlay.setMap(null);
+        this.overlay.setMap(null);
         // this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this._markerOverlay);
 
         // if (this._markerOverlay) {
@@ -102,11 +108,13 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
     private _init(): void {
         this._el = this._elementRef.nativeElement;
 
-        this._markerOverlay = new this._customMarkerOverlayViewService.CustomMarkerOverlayView(
+        this.overlay = new this._customMarkerOverlayViewService.CustomMarkerOverlayView(
             this._el, this['position']
         );
 
-        this._markerOverlay.setMap(this._nguiMapComponent.map);
+        if (this.attachToParentMap) {
+            this.overlay.setMap(this._nguiMapComponent.map);
+        }
 
         // set google events listeners and emits to this outputs listeners
         // TODO: I dont this this is needed
@@ -120,6 +128,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
         //         this._mapService.updateGoogleObject(this._markerOverlay, changes));
 
         // this.nguiMapComponent.addToMapObjectGroup('CustomMarker', this._markerOverlay);
-        this.initialized.emit(this._markerOverlay);
+        this.initialized.emit(this.overlay);
+        this.intialized$.next(this.overlay);
     }
 }

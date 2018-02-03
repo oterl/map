@@ -45,6 +45,7 @@
     "@angular/common": ">=4.0.0"
   },
   "devDependencies": {
+    "@types/markerclustererplus": "^2.1.33",
     "@angular/cli": "^1.5.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",

@@ -101,9 +101,7 @@ export class NgMapAsyncApiLoader extends NgMapApiLoader {
     readonly scriptId = 'googleMaps';
 
     constructor(
-        @Optional()
-        @Inject(NG_MAP_CONFIG_TOKEN)
-        config
+        @Optional() @Inject(NG_MAP_CONFIG_TOKEN) config
     ) {
         super(config);
     }

@@ -8,6 +8,7 @@ import { InfoWindow } from './components/info-window';
 import { NguiMapComponent } from './components/ngui-map.component';
 import { BicyclingLayer } from './directives/bicycling-layer';
 import { Circle } from './directives/circle';
+import { CustomMarkerClusterDirective } from './directives/custom-marker-clusterer.directive';
 import { DataLayer } from './directives/data-layer';
 import { DirectionsRenderer } from './directives/directions-renderer';
 import { DrawingManager } from './directives/drawing-manager';
@@ -35,38 +36,39 @@ import { MapService } from './services/ngui-map';
 import { OptionBuilder } from './services/option-builder';
 
 const COMPONENTS_DIRECTIVES = [
-  NguiMapComponent,
-  InfoWindow,
-  Marker,
-  Circle,
-  CustomMarkerComponent,
-  Polygon,
-  InfoWindow,
-  Polyline,
-  GroundOverlay,
-  TransitLayer,
-  TrafficLayer,
-  HeatmapLayer,
-  BicyclingLayer,
-  KmlLayer,
-  DataLayer,
-  StreetViewPanorama,
-  PlacesAutoComplete,
-  DirectionsRenderer,
-  DrawingManager
+    BicyclingLayer,
+    Circle,
+    CustomMarkerClusterDirective,
+    CustomMarkerComponent,
+    DataLayer,
+    DirectionsRenderer,
+    DrawingManager,
+    GroundOverlay,
+    HeatmapLayer,
+    InfoWindow,
+    InfoWindow,
+    KmlLayer,
+    Marker,
+    NguiMapComponent,
+    PlacesAutoComplete,
+    Polygon,
+    Polyline,
+    StreetViewPanorama,
+    TrafficLayer,
+    TransitLayer,
 ];
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: COMPONENTS_DIRECTIVES,
-  exports: [COMPONENTS_DIRECTIVES],
-  providers: [
-    GeoCoder,
-    NavigatorGeolocation,
-    MapService,
-    OptionBuilder,
-    { provide: NgMapApiLoader, useClass: NgMapAsyncApiLoader }
-  ]
+    imports: [CommonModule],
+    declarations: COMPONENTS_DIRECTIVES,
+    exports: [COMPONENTS_DIRECTIVES],
+    providers: [
+        GeoCoder,
+        NavigatorGeolocation,
+        MapService,
+        OptionBuilder,
+        { provide: NgMapApiLoader, useClass: NgMapAsyncApiLoader }
+    ]
 })
 export class NguiMapModule {
   static forRoot(config: ConfigOption = {}): ModuleWithProviders {

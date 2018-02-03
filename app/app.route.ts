@@ -16,6 +16,7 @@ import { KmlLayerComponent } from './map-components/kml-layer.component';
 import { MapChangeMultiplePropertiesComponent } from './map-components/map-change-multiple-properties.component';
 import { MapWithOptionsComponent } from './map-components/map-with-options.component';
 import { MapWithStreetviewComponent } from './map-components/map-with-streetview.component';
+import { MarkerClustersComponent } from './map-components/marker-clusters.component';
 import { MarkerNgForComponent } from './map-components/marker-ng-for.component';
 import { MarkerWithCustomIconComponent } from './map-components/marker-with-custom-icon.component';
 import { MultipleMapComponent } from './map-components/multiple-map.component';
@@ -59,6 +60,7 @@ export const routes: Routes = [
   { path: 'custom-marker', component: CustomMarkerDemoComponent },
   { path: 'custom-marker-ng-for', component: CustomMarkerNgForComponent },
   { path: 'experiment', component: ExperimentComponent },
+  { path: 'marker-clusters', component: MarkerClustersComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -91,6 +93,7 @@ CustomMarkerDemoComponent,
   CustomMarkerDemoComponent,
   CustomMarkerNgForComponent,
   MarkerWithCustomIconComponent,
-  ExperimentComponent
+  ExperimentComponent,
+  MarkerClustersComponent
 ];
 

@@ -5,86 +5,79 @@ export function CustomMarkerOverlayView<
 >(OverlayView: TClass) {
     return class extends OverlayView {
         private htmlEl: HTMLElement;
-        private position: any;
+        private position: google.maps.LatLng;
         private zIndex: string;
         private visible: boolean = true;
 
+        /**
+         * @param args First ramameter is HTMLElement, second is
+         *             { lat: number, lng: number } or google.maps.LatLng
+         */
         constructor(...args: any[]) {
             super();
 
             this.htmlEl = args[0];
-            this.position = args[1];
+
+            const position = args[1];
+            this.position = position instanceof google.maps.LatLng
+                ? position
+                : new google.maps.LatLng(+position.lat, +position.lng);
         }
 
         onAdd(): void {
             this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
 
-            // required for correct display inside google maps container
+            // Required for correct display inside google maps container
             this.htmlEl.style.position = 'absolute';
         }
 
         draw(): void {
             this.setPosition(this.position);
             this.setZIndex(this.zIndex);
-            this.setVisible(this.visible);
+            this.setVisible(true);
         }
 
         onRemove(): void {
-            //
+            const panes = this.getPanes();
+
+            if (panes) {
+                panes.overlayMouseTarget.removeChild(this.htmlEl);
+            }
+
+            if (this.htmlEl.parentElement) {
+                this.htmlEl.parentElement.removeChild(this.htmlEl);
+            }
         }
 
         getPosition() {
             return this.position;
         }
 
-        setPosition = (position?: any) => {
-            this.htmlEl.style.visibility = 'hidden';
-
-            if (position.constructor.name === 'Array') {
-                this.position = new google.maps.LatLng(position[0], position[1]);
-            } else if (typeof position === 'string') {
-                let geocoder = new google.maps.Geocoder();
-
-                geocoder.geocode({ address: position }, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        console.log('setting custom marker position from address', position);
-                        this.setPosition(results[0].geometry.location);
-                    } else {
-                        console.log('Error in custom marker geo coding, position');
-                    }
-                });
-            } else if (position && typeof position.lng === 'function') {
-                this.position = position;
-            }
-
+        setPosition = (position: google.maps.LatLng) => {
             const projection = this.getProjection();
 
-            if (projection && typeof this.position.lng === 'function') {
-                let positionOnMap = () => {
-                    let posPixel = projection.fromLatLngToDivPixel(this.position);
-                    let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
-                    let y = Math.round(posPixel.y - this.htmlEl.offsetHeight / 2);
-                    this.htmlEl.style.left = x + 'px';
-                    this.htmlEl.style.top = y + 'px';
-                    this.htmlEl.style.visibility = 'visible';
-                };
-
-                if (this.htmlEl.offsetWidth && this.htmlEl.offsetHeight) {
-                    positionOnMap();
-                } else {
-                    setTimeout(() => positionOnMap());
-                }
+            if (projection) {
+                let posPixel = projection.fromLatLngToDivPixel(this.position);
+                let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
+                let y = Math.round(posPixel.y - this.htmlEl.offsetHeight / 2);
+                this.htmlEl.style.left = x + 'px';
+                this.htmlEl.style.top = y + 'px';
             }
         }
 
         setZIndex(zIndex: string): void {
-            zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
+            zIndex && (this.zIndex = zIndex);
             this.htmlEl.style.zIndex = this.zIndex;
         }
 
         setVisible(visible: boolean) {
-            this.htmlEl.style.display = visible ? 'inline-block' : 'none';
             this.visible = visible;
+            this.htmlEl.style.display = visible ? 'inline-block' : 'none';
+        }
+
+        // TODO: implement custom marker dragging
+        getDraggable() {
+            return false;
         }
     };
 }
