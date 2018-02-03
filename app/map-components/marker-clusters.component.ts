@@ -4,6 +4,7 @@ import {
     } from '@angular/core';
 import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
+import { delay } from 'rxjs/operators';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({
@@ -30,7 +31,7 @@ import { SourceCodeService } from '../source-code.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MarkerClustersComponent {
-    public positions = Observable.of(this.getRandomMarkers());
+    public positions = Observable.of(this.getRandomMarkers()).pipe(delay(2000));
 
     code: string;
 

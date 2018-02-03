@@ -68,7 +68,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
     @Input() position: any;
     @Input() attachToParentMap: boolean = true;
 
-    intialized$ = new Subject();
+    intialized$ = new ReplaySubject(1);
     overlay: any;
 
     // private _inputChange: Subject<SimpleChanges> = new Subject<SimpleChanges>();

@@ -6,6 +6,7 @@ import {
     OnInit,
     QueryList
     } from '@angular/core';
+import { AfterContentChecked } from '@angular/core/src/metadata/lifecycle_hooks';
 import { prop as propR } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest as cl } from 'rxjs/observable/combineLatest';
@@ -54,7 +55,7 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
 @Directive({
     selector: 'custom-marker-cluster'
 })
-export class CustomMarkerClusterDirective implements OnInit, AfterContentInit {
+export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked {
     @Input() imageRow: string;
     @Input() color: string;
 
@@ -85,13 +86,13 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentInit {
             });
     }
 
-    ngAfterContentInit(): void {
-        this.customMarkers.length === 0
+    ngAfterContentChecked(): void {
+        (this.customMarkers.length === 0
             ? Observable.of([])
             : cl(
                 ...this.customMarkers.map(
                     (customMarkerCmp: CustomMarkerComponent) =>
-                            customMarkerCmp.intialized$))
+                            customMarkerCmp.intialized$)))
                 .subscribe((overlays: any[]) => {
                     this.markerOverlays = overlays;
                     this._reloadCluster();
