@@ -11,9 +11,9 @@ import { Observable } from 'rxjs/Observable';
 import { combineLatest as cl } from 'rxjs/observable/combineLatest';
 import { first } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/operators/combineLatest';
-import { MapLoadedService } from 'services/map-loaded.service';
 import { CustomMarkerComponent } from '../components/custom-marker/custom-marker.component';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { MapLoadedService } from '../services/map-loaded.service';
 import { MarkerClustererProviderService } from '../services/marker-clusterer-provider.service';
 
 const getDefaultImageInline = (color: string = '#004b7a') => `
