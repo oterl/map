@@ -6,7 +6,10 @@ import {
     OnInit,
     QueryList
     } from '@angular/core';
-import { AfterContentChecked } from '@angular/core/src/metadata/lifecycle_hooks';
+import {
+    AfterContentChecked,
+    OnDestroy
+    } from '@angular/core/src/metadata/lifecycle_hooks';
 import { prop as propR } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest as cl } from 'rxjs/observable/combineLatest';
@@ -55,7 +58,7 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
 @Directive({
     selector: 'custom-marker-cluster'
 })
-export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked {
+export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked, OnDestroy {
     @Input() imageRow: string;
     @Input() color: string;
 
@@ -99,6 +102,10 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
                 });
     }
 
+    ngOnDestroy(): void {
+        this._removeCluster();
+    }
+
     private _reloadCluster() {
         if (this.cluster) {
             this._removeCluster();
@@ -119,6 +126,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
 
     private _removeCluster() {
         this.cluster.setMap(null);
+        this.cluster = null;
     }
 
     private _getClusterStyles() {
