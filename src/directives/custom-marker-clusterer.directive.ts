@@ -1,20 +1,20 @@
 import {
+    AfterContentChecked,
     AfterContentInit,
     ContentChildren,
     Directive,
     Input,
+    OnDestroy,
     OnInit,
     QueryList
     } from '@angular/core';
-import {
-    AfterContentChecked,
-    OnDestroy
-    } from '@angular/core/src/metadata/lifecycle_hooks';
-import { prop as propR } from 'ramda';
+import { prop as Rprop } from 'ramda';
 import { Observable } from 'rxjs/Observable';
-import { combineLatest as cl } from 'rxjs/observable/combineLatest';
-import { first } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/operators/combineLatest';
+import { combineLatest as combine } from 'rxjs/observable/combineLatest';
+import {
+    combineLatest,
+    first
+    } from 'rxjs/operators';
 import { CustomMarkerComponent } from '../components/custom-marker/custom-marker.component';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { MapLoadedService } from '../services/map-loaded.service';
@@ -59,16 +59,36 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
     selector: 'custom-marker-cluster'
 })
 export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked, OnDestroy {
-    @Input() imageRow: string;
+    /**
+     * Image of cluster
+     * In case rawImage is provided color property will not be used
+     */
+    @Input() rawImage: string;
+
+    /**
+     * Color of the cluster image, this cannot be changed during cluster life
+     * But that can be done if needed
+     */
     @Input() color: string;
+
+    /**
+     * Configuration options for marker clusterer
+     * Default options are { averageCenter: true, maxZoom: 12 }
+     * Dont use styles because these will be overriden
+     */
+    @Input() set options(options: MarkerClustererOptions) {
+        this._options = { ...this._defaultOptions, ...(options || {}) };
+    }
 
     @ContentChildren(CustomMarkerComponent)
     customMarkers: QueryList<CustomMarkerComponent>;
 
     cluster: MarkerClusterer;
-    markerOverlays: any[];
 
+    private readonly _defaultOptions = { averageCenter: true, maxZoom: 12 };
     private MarkerClusterer: typeof MarkerClusterer;
+    private _options: MarkerClustererOptions = this._defaultOptions;
+    private _markerOverlays: any[];
     private _map: google.maps.Map;
 
     constructor(
@@ -92,12 +112,12 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     ngAfterContentChecked(): void {
         (this.customMarkers.length === 0
             ? Observable.of([])
-            : cl(
+            : combine(
                 ...this.customMarkers.map(
                     (customMarkerCmp: CustomMarkerComponent) =>
                             customMarkerCmp.intialized$)))
                 .subscribe((overlays: any[]) => {
-                    this.markerOverlays = overlays;
+                    this._markerOverlays = overlays;
                     this.cluster
                         ? this._reloadClusterOverlays()
                         : this._initCluster();
@@ -115,30 +135,31 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
 
         if (!this.MarkerClusterer ||
             !this._map ||
-            !this.markerOverlays) {
+            !this._markerOverlays) {
             return;
         }
 
         this.cluster = new this.MarkerClusterer(
             this._map,
-            this.markerOverlays,
-            { styles: this._getClusterStyles() }
+            this._markerOverlays,
+            { ...this._options, styles: this._getClusterStyles() }
         );
     }
 
     private _removeCluster() {
+        this.cluster.clearMarkers();
         this.cluster.setMap(null);
         this.cluster = null;
     }
 
     private _reloadClusterOverlays() {
-        if (!this.cluster || ! this.markerOverlays) {
+        if (!this.cluster || ! this._markerOverlays) {
             return;
         }
 
         this.cluster.clearMarkers();
 
-        this.cluster.addMarkers(this.markerOverlays);
+        this.cluster.addMarkers(this._markerOverlays);
     }
 
     private _getClusterStyles() {
@@ -153,7 +174,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
 
     private _getGoogleClusterInlineSvg() {
         const encoded = window.btoa(
-            this.imageRow || getDefaultImageInline(this.color)
+            this.rawImage || getDefaultImageInline(this.color)
         );
 
         return `data:image/svg+xml;base64,${encoded}`;
