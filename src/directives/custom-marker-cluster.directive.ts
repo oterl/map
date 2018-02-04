@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { combineLatest as combine } from 'rxjs/observable/combineLatest';
 import {
     combineLatest,
+    filter,
     first
     } from 'rxjs/operators';
 import { CustomMarkerComponent } from '../components/custom-marker/custom-marker.component';
@@ -142,8 +143,9 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this._nguiMapComponent.mapReady$
+        this._mapLoadedService.loaded$
             .pipe(
+                filter(Boolean),
                 combineLatest(this._markerClustererProviderService.getClusterer()),
                 first())
             .subscribe(([, MarkerClusterer]) => {
