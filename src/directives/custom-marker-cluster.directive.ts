@@ -44,7 +44,7 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
                     fill-opacity="0.3"/>
             </g>
         </defs>
-        <g fill="${color}">
+        <g transform="rotate(${Math.round(Math.random() * 120)})" fill="${color}">
             <circle r="42"/>
             <g>
                 <use xlink:href="#a"/>

@@ -71,7 +71,7 @@ export class MarkerClustersComponent {
         let randomLat: number, randomLng: number;
 
         let positions = [];
-        for (let i = 0 ; i < 20000; i++) {
+        for (let i = 0 ; i < 5000; i++) {
             randomLat = Math.random() * (45.8500 - 43.7300) + 43.7300;
             randomLng = Math.random() * (-85.9500 - -79.7699) + -79.7699;
             positions.push({ lat: randomLat, lng: randomLng });
