@@ -3,9 +3,11 @@ import {
     AfterContentInit,
     ContentChildren,
     Directive,
+    EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     QueryList
     } from '@angular/core';
 import { prop as Rprop } from 'ramda';
@@ -18,6 +20,7 @@ import {
 import { CustomMarkerComponent } from '../components/custom-marker/custom-marker.component';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { MapLoadedService } from '../services/map-loaded.service';
+import { MapService } from '../services/map.service';
 import { MarkerClustererProviderService } from '../services/marker-clusterer-provider.service';
 
 const getDefaultImageInline = (color: string = '#004b7a') => `
@@ -55,8 +58,17 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
     </svg>
 `;
 
+const outputs = [
+    'click',
+    'clusteringbegin',
+    'clusteringend',
+    'mouseout',
+    'mouseover'
+];
+
 @Directive({
-    selector: 'custom-marker-cluster'
+    selector: 'custom-marker-cluster',
+    outputs
 })
 export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     /**
@@ -98,6 +110,7 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     constructor(
         private readonly _markerClustererProviderService: MarkerClustererProviderService,
         private readonly _mapLoadedService: MapLoadedService,
+        private readonly _mapService: MapService,
         private readonly _nguiMapComponent: NguiMapComponent
     ) { }
 
@@ -132,7 +145,7 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
                 });
     }
 
-    private _initCluster() {
+    private _initCluster(): void {
         if (this.cluster) {
             this._removeCluster();
         }
@@ -148,15 +161,18 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
             this._markerOverlays,
             { ...this._options, styles: this._getClusterStyles() }
         );
+
+        this._mapService.setObjectEvents(outputs, this, this.cluster);
     }
 
-    private _removeCluster() {
+    private _removeCluster(): void {
         this.cluster.clearMarkers();
+        this._mapService.clearObjectEvents(outputs, this, 'cluster');
         this.cluster.setMap(null);
         this.cluster = null;
     }
 
-    private _reloadClusterOverlays() {
+    private _reloadClusterOverlays(): void {
         if (!this.cluster || ! this._markerOverlays) {
             return;
         }

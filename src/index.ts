@@ -16,7 +16,7 @@ export { GroundOverlay } from './directives/ground-overlay';
 export { HeatmapLayer } from './directives/heatmap-layer';
 export { KmlLayer } from './directives/kml-layer';
 export { Marker } from './directives/marker';
-export { MapService } from './services/ngui-map';
+export { MapService } from './services/map.service';
 export { PlacesAutoComplete } from './directives/places-auto-complete';
 export { Polygon } from './directives/polygon';
 export { Polyline } from './directives/polyline';

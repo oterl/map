@@ -5,7 +5,7 @@ import {
     takeUntil
     } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { MapService } from '../../services/ngui-map';
+import { MapService } from '../../services/map.service';
 import { CustomMarkerOverlayViewService } from '../custom-marker/services/custom-marker-overlay-view.service';
 import { NguiMapComponent } from '../ngui-map.component';
 import {

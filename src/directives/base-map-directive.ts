@@ -7,7 +7,7 @@ import {
     SimpleChanges
     } from '@angular/core';
 import { NguiMapComponent } from '../components/ngui-map.component';
-import { MapService } from '../services/ngui-map';
+import { MapService } from '../services/map.service';
 import { OptionBuilder } from '../services/option-builder';
 import { missingLibraryError } from '../services/util';
 
@@ -68,7 +68,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     this.mapObject['nguiMapComponent'] = this.nguiMapComponent;
 
     // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+    this.nguiMap.setObjectEvents(this.outputs, this, this.mapObject);
 
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);

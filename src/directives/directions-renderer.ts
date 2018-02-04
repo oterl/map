@@ -1,8 +1,14 @@
-import { Input, Directive, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
+import {
+    Directive,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges
+    } from '@angular/core';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = [
   'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
@@ -47,7 +53,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
     // set google events listeners and emidirectionsRenderer to this outputs listeners
     this.showDirections(this.directionsRequest);
 
-    this.nguiMap.setObjectEvents(this.outputs, this, 'directionsRenderer');
+    this.nguiMap.setObjectEvents(this.outputs, this, this.directionsRenderer);
 
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.directionsRenderer);

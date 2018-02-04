@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = [ 'url', 'bounds', 'clickable', 'opacity' ];
 const OUTPUTS = [ 'click', 'dblclick' ];
@@ -31,7 +31,7 @@ export class GroundOverlay extends BaseMapDirective {
     this.mapObject['mapObjectName'] = this.mapObjectName;
 
     // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+    this.nguiMap.setObjectEvents(this.outputs, this, this.mapObject);
 
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);

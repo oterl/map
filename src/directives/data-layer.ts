@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson', 'geoJsonUrl'];
 const OUTPUTS = [
@@ -40,7 +40,7 @@ export class DataLayer extends BaseMapDirective {
     this.mapObject = this.nguiMapComponent.map.data;
 
     // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+    this.nguiMap.setObjectEvents(this.outputs, this, this.mapObject);
 
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);

@@ -1,7 +1,10 @@
-import {Directive, OnDestroy} from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
+import {
+    Directive,
+    OnDestroy
+    } from '@angular/core';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = [
   'selector', 'options',
@@ -47,7 +50,7 @@ export class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
     this.mapObject['nguiMapComponent'] = this.nguiMapComponent;
 
     // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+    this.nguiMap.setObjectEvents(this.outputs, this, this.mapObject);
 
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);

@@ -16,9 +16,9 @@ import { Subject } from 'rxjs/Subject';
 import { NgMapApiLoader } from '../services/api-loader';
 import { GeoCoder } from '../services/geo-coder';
 import { MapLoadedService } from '../services/map-loaded.service';
+import { MapService } from '../services/map.service';
 import { MarkerClustererProviderService } from '../services/marker-clusterer-provider.service';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
-import { MapService } from '../services/ngui-map';
 import { OptionBuilder } from '../services/option-builder';
 import { toCamelCase } from '../services/util';
 import { CustomMarkerOverlayViewService } from './custom-marker/services/custom-marker-overlay-view.service';
@@ -189,7 +189,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
       }
 
       // set google events listeners and emits to this outputs listeners
-      this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
+      this.nguiMap.setObjectEvents(OUTPUTS, this, this.map);
 
       this.map.addListener('idle', () => {
         if (!this.mapIdledOnce) {

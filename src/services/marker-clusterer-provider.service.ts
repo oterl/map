@@ -10,7 +10,8 @@ import { loadScript } from '../services/util';
 @Injectable()
 export class MarkerClustererProviderService {
     private MarkerClusterer: typeof MarkerClusterer;
-    // private clustererLibUrl = 'https://cdnjs.cloudflare.com/ajax/libs/js-marker-clusterer/1.0.0/markerclusterer.js';
+
+    // Docs here: http://htmlpreview.github.io/?https://github.com/googlemaps/v3-utility-library/blob/master/markerclustererplus/docs/reference.html
     private clustererLibUrl = 'https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.min.js';
 
     getClusterer(): Observable<typeof MarkerClusterer> {

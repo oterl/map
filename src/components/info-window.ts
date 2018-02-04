@@ -12,7 +12,7 @@ import {
     } from '@angular/core';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { Subject } from 'rxjs/Subject';
-import { MapService } from '../services/ngui-map';
+import { MapService } from '../services/map.service';
 import { NguiMapComponent } from './ngui-map.component';
 
 const INPUTS = [
@@ -72,7 +72,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     }
 
     // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(OUTPUTS, this, 'infoWindow');
+    this.nguiMap.setObjectEvents(OUTPUTS, this, this.infoWindow);
 
     // update object when input changes
     debounceTime.call(this.inputChanges$, 1000)

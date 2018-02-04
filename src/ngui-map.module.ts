@@ -8,7 +8,7 @@ import { InfoWindow } from './components/info-window';
 import { NguiMapComponent } from './components/ngui-map.component';
 import { BicyclingLayer } from './directives/bicycling-layer';
 import { Circle } from './directives/circle';
-import { CustomMarkerClusterDirective } from './directives/custom-marker-clusterer.directive';
+import { CustomMarkerClusterDirective } from './directives/custom-marker-cluster.directive';
 import { DataLayer } from './directives/data-layer';
 import { DirectionsRenderer } from './directives/directions-renderer';
 import { DrawingManager } from './directives/drawing-manager';
@@ -31,8 +31,8 @@ import {
     NG_MAP_CONFIG_TOKEN
     } from './services/config';
 import { GeoCoder } from './services/geo-coder';
+import { MapService } from './services/map.service';
 import { NavigatorGeolocation } from './services/navigator-geolocation';
-import { MapService } from './services/ngui-map';
 import { OptionBuilder } from './services/option-builder';
 
 const COMPONENTS_DIRECTIVES = [
