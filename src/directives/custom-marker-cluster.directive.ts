@@ -112,7 +112,9 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
         private readonly _mapLoadedService: MapLoadedService,
         private readonly _mapService: MapService,
         private readonly _nguiMapComponent: NguiMapComponent
-    ) { }
+    ) {
+        outputs.forEach((eventName: string) => this[eventName] = new EventEmitter());
+    }
 
     ngOnInit(): void {
         this._nguiMapComponent.mapReady$

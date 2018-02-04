@@ -1,5 +1,4 @@
 import {
-    EventEmitter,
     Injectable,
     NgZone,
     SimpleChanges
@@ -37,9 +36,6 @@ export class MapService {
         definedEvents.forEach((definedEvent: string) => {
             const eventName = this.normalizeEventName(definedEvent);
             const zone = this.zone;
-            if (!(componentInstance[definedEvent] instanceof EventEmitter)) {
-                componentInstance[definedEvent] = new EventEmitter();
-            }
 
             zone.runOutsideAngular(() => {
                 mapObject.addListener(

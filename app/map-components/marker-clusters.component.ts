@@ -20,7 +20,8 @@ import { SourceCodeService } from '../source-code.service';
             [style.height.px]="750"
             zoom="7"
             center="Brampton, Canada">
-            <custom-marker-cluster>
+            <custom-marker-cluster
+                (clusteringbegin)="onClusteringBegin()">
                 <custom-marker
                     *ngFor="let pos of positions | async"
                     [attachToParentMap]="false"
@@ -64,6 +65,10 @@ export class MarkerClustersComponent {
 
     regenerate() {
         this.reg.next();
+    }
+
+    onClusteringBegin() {
+        console.log('clustering begin');
     }
 
     // showMarkersFromObservable() {
