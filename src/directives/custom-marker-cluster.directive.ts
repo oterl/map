@@ -170,8 +170,6 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     private _removeCluster(): void {
         this.cluster.clearMarkers();
         this._mapService.clearObjectEvents(outputs, this, 'cluster');
-        this.cluster.setMap(null);
-        this.cluster = null;
     }
 
     private _reloadClusterOverlays(): void {
