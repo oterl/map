@@ -81,7 +81,10 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     }
 
     @ContentChildren(CustomMarkerComponent)
-    customMarkers: QueryList<CustomMarkerComponent>;
+    set customMarkers (customMarkers: QueryList<CustomMarkerComponent>) {
+        this._customMarkers = customMarkers;
+        console.log('New cusom markers');
+    }
 
     cluster: MarkerClusterer;
 
@@ -90,6 +93,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     private _options: MarkerClustererOptions = this._defaultOptions;
     private _markerOverlays: any[];
     private _map: google.maps.Map;
+    private _customMarkers: QueryList<CustomMarkerComponent>;
 
     constructor(
         private readonly _markerClustererProviderService: MarkerClustererProviderService,
@@ -110,10 +114,10 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     }
 
     ngAfterContentChecked(): void {
-        (this.customMarkers.length === 0
+        (this._customMarkers.length === 0
             ? Observable.of([])
             : combine(
-                ...this.customMarkers.map(
+                ...this._customMarkers.map(
                     (customMarkerCmp: CustomMarkerComponent) =>
                             customMarkerCmp.intialized$)))
                 .subscribe((overlays: any[]) => {
