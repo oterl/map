@@ -97,6 +97,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         // this._inputChange.complete();
+        // TODO not sure if this is needed
         this.overlay.setMap(null);
         // this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this._markerOverlay);
 

@@ -2,15 +2,24 @@ import {
     ChangeDetectionStrategy,
     Component
     } from '@angular/core';
+import { Subject } from 'rxjs';
 import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
-import { delay } from 'rxjs/operators';
+import {
+    delay,
+    map,
+    mapTo,
+    merge
+    } from 'rxjs/operators';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({
     template: `
         <h1>Marker With Clusters</h1>
-        <ngui-map zoom="7" center="Brampton, Canada">
+        <ngui-map
+            [style.height.px]="750"
+            zoom="7"
+            center="Brampton, Canada">
             <custom-marker-cluster>
                 <custom-marker
                     *ngFor="let pos of positions | async"
@@ -27,11 +36,15 @@ import { SourceCodeService } from '../source-code.service';
                 </custom-marker>
             </custom-marker-cluster>
         </ngui-map>
+        <button (click)="regenerate()">Regenerate</button>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MarkerClustersComponent {
-    public positions = Observable.of(this.getRandomMarkers()).pipe(delay(2000));
+    reg = new Subject();
+    public positions = Observable
+        .of(this.getRandomMarkers()).pipe(delay(2000))
+        .pipe(merge(this.reg.pipe(map(() => this.getRandomMarkers()))));
 
     code: string;
 
@@ -41,12 +54,16 @@ export class MarkerClustersComponent {
         let randomLat: number, randomLng: number;
 
         let positions = [];
-        for (let i = 0 ; i < 10000; i++) {
+        for (let i = 0 ; i < 10; i++) {
             randomLat = Math.random() * (45.8500 - 43.7300) + 43.7300;
             randomLng = Math.random() * (-85.9500 - -79.7699) + -79.7699;
             positions.push({ lat: randomLat, lng: randomLng });
         }
         return positions;
+    }
+
+    regenerate() {
+        this.reg.next();
     }
 
     // showMarkersFromObservable() {

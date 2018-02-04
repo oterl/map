@@ -85,7 +85,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
             .subscribe(([, MarkerClusterer]) => {
                 this.MarkerClusterer = MarkerClusterer;
                 this._map = this._nguiMapComponent.map;
-                this._reloadCluster();
+                this._initCluster();
             });
     }
 
@@ -98,7 +98,9 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
                             customMarkerCmp.intialized$)))
                 .subscribe((overlays: any[]) => {
                     this.markerOverlays = overlays;
-                    this._reloadCluster();
+                    this.cluster
+                        ? this._reloadClusterOverlays()
+                        : this._initCluster();
                 });
     }
 
@@ -106,7 +108,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
         this._removeCluster();
     }
 
-    private _reloadCluster() {
+    private _initCluster() {
         if (this.cluster) {
             this._removeCluster();
         }
@@ -127,6 +129,16 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     private _removeCluster() {
         this.cluster.setMap(null);
         this.cluster = null;
+    }
+
+    private _reloadClusterOverlays() {
+        if (!this.cluster || ! this.markerOverlays) {
+            return;
+        }
+
+        this.cluster.clearMarkers();
+
+        this.cluster.addMarkers(this.markerOverlays);
     }
 
     private _getClusterStyles() {

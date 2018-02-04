@@ -38,12 +38,6 @@ export function CustomMarkerOverlayView<
         }
 
         onRemove(): void {
-            const panes = this.getPanes();
-
-            if (panes) {
-                panes.overlayMouseTarget.removeChild(this.htmlEl);
-            }
-
             if (this.htmlEl.parentElement) {
                 this.htmlEl.parentElement.removeChild(this.htmlEl);
             }
