@@ -3,27 +3,32 @@ import { Observable } from 'rxjs';
 import {
     first,
     map,
+    publishReplay,
+    refCount,
     tap
     } from 'rxjs/operators';
 import { loadScript } from '../services/util';
 
 @Injectable()
 export class MarkerClustererProviderService {
-    private MarkerClusterer: typeof MarkerClusterer;
+    private MarkerClusterer$: Observable<typeof MarkerClusterer>;
 
     // Docs here: http://htmlpreview.github.io/?https://github.com/googlemaps/v3-utility-library/blob/master/markerclustererplus/docs/reference.html
     private clustererLibUrl = 'https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.min.js';
 
     getClusterer(): Observable<typeof MarkerClusterer> {
-        if (this.MarkerClusterer) {
-            return Observable.of(this.MarkerClusterer);
-        }
-
-        return loadScript(this.clustererLibUrl, 'marker-clusterer', window)
+        if (!this.MarkerClusterer$) {
+            this.MarkerClusterer$ = loadScript(
+                this.clustererLibUrl,
+                'marker-clusterer',
+                window)
             .pipe(
                 map(() => MarkerClusterer),
-                tap(() => { this.MarkerClusterer = MarkerClusterer; }),
-                first()
+                publishReplay(1),
+                refCount()
             );
+        }
+
+        return this.MarkerClusterer$;
     }
 }

@@ -36,6 +36,22 @@ import { SourceCodeService } from '../source-code.service';
                     </div>
                 </custom-marker>
             </custom-marker-cluster>
+            <custom-marker-cluster
+                (clusteringbegin)="onClusteringBegin()">
+                <custom-marker
+                    *ngFor="let pos of positions | async"
+                    [attachToParentMap]="false"
+                    [position]="pos">
+                    <div
+                        style="
+                            width: 5px;
+                            height: 5px;
+                            border-radius: 50%;
+                            background-color: black;
+                        ">
+                    </div>
+                </custom-marker>
+            </custom-marker-cluster>
         </ngui-map>
         <button (click)="regenerate()">Regenerate</button>
     `,
