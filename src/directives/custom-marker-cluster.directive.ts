@@ -72,6 +72,22 @@ const outputs = [
 })
 export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     /**
+     * Default styles are: {
+     *     width: 40,
+     *     height: 40,
+     *     textColor: 'white',
+     *     textSize: 12,
+     *     url: undefined
+     * }
+     */
+    @Input() set clusterStyles(clusterStyles: ClusterIconStyle) {
+        this._clusterStyles = {
+            ...this._defaultClusterStyles,
+            ...clusterStyles || {}
+        };
+    }
+
+    /**
      * Image of cluster
      * In case rawImage is provided color property will not be used
      */
@@ -101,7 +117,16 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     cluster: MarkerClusterer;
 
     private readonly _defaultOptions = { averageCenter: true, maxZoom: 12 };
+    private readonly _defaultClusterStyles = {
+        width: 40,
+        height: 40,
+        textColor: 'white',
+        textSize: 12,
+        url: undefined
+    };
+
     private MarkerClusterer: typeof MarkerClusterer;
+    private _clusterStyles: ClusterIconStyle = this._defaultClusterStyles;
     private _options: MarkerClustererOptions = this._defaultOptions;
     private _markerOverlays: any[];
     private _map: google.maps.Map;
@@ -184,11 +209,8 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
 
     private _getClusterStyles() {
         return [{
-            width: 40,
-            height: 40,
+            ...this._clusterStyles,
             url: this._getGoogleClusterInlineSvg(),
-            textColor: 'white',
-            textSize: 12
         }];
     }
 
