@@ -58,7 +58,7 @@ const getDefaultImageInline = (color: string = '#004b7a') => `
 @Directive({
     selector: 'custom-marker-cluster'
 })
-export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked, OnDestroy {
+export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
     /**
      * Image of cluster
      * In case rawImage is provided color property will not be used
@@ -83,7 +83,7 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
     @ContentChildren(CustomMarkerComponent)
     set customMarkers (customMarkers: QueryList<CustomMarkerComponent>) {
         this._customMarkers = customMarkers;
-        console.log('New cusom markers');
+        this._updateMarkers();
     }
 
     cluster: MarkerClusterer;
@@ -113,7 +113,11 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
             });
     }
 
-    ngAfterContentChecked(): void {
+    ngOnDestroy(): void {
+        this._removeCluster();
+    }
+
+    private _updateMarkers() {
         (this._customMarkers.length === 0
             ? Observable.of([])
             : combine(
@@ -126,10 +130,6 @@ export class CustomMarkerClusterDirective implements OnInit, AfterContentChecked
                         ? this._reloadClusterOverlays()
                         : this._initCluster();
                 });
-    }
-
-    ngOnDestroy(): void {
-        this._removeCluster();
     }
 
     private _initCluster() {
