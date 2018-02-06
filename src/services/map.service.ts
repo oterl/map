@@ -42,7 +42,7 @@ export class MapService {
                     eventName,
                     function(event: google.maps.event) {
                         let param: any = event ? event : {};
-                        param.target = this;
+                        // param.target = this;
                         zone.run(
                             () => componentInstance[definedEvent].emit(param)
                         );

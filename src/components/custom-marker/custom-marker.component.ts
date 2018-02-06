@@ -22,14 +22,14 @@ import {
 //     'position'
 // ];
 // to avoid DOM event conflicts map_*
-// const OUTPUTS = [
+const OUTPUTS = [
 //     'animationChanged',
-//     'click',
+     'click',
 //     'clickableChanged',
 //     'cursorChanged',
 //     'dblclick',
 //     'drag',
-//     'dragend',
+     'dragend',
 //     'draggableChanged',
 //     'dragstart',
 //     'flatChanged',
@@ -51,20 +51,21 @@ import {
 //     'titleChanged',
 //     'visibleChanged',
 //     'zindexChanged'
-// ];
+];
 
 
 // TODO: should be directive
 @Component({
     selector: 'ngui-map > custom-marker',
     // inputs: INPUTS,
-    // outputs: OUTPUTS,
+    outputs: OUTPUTS,
     templateUrl: './custom-marker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomMarkerComponent implements OnInit, OnDestroy {
     @Output() initialized: EventEmitter<any> = new EventEmitter();
 
+    @Input() draggable: boolean = false;
     @Input() position: any;
     @Input() attachToParentMap: boolean = true;
 
@@ -82,7 +83,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
         private readonly _mapService: MapService
     ) {
         this._elementRef.nativeElement.style.display = 'none';
-        // OUTPUTS.forEach(output => this[output] = new EventEmitter());
+        OUTPUTS.forEach(output => this[output] = new EventEmitter());
     }
 
     ngOnInit() {
@@ -101,16 +102,18 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
         this.overlay.setMap(null);
         // this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this._markerOverlay);
 
-        // if (this._markerOverlay) {
-        //     this._mapService.clearObjectEvents(OUTPUTS, this, 'mapObject');
-        // }
+        if (this.overlay) {
+            this._mapService.clearObjectEvents(OUTPUTS, this, 'overlay');
+        }
     }
 
     private _init(): void {
         this._el = this._elementRef.nativeElement;
 
         this.overlay = new this._customMarkerOverlayViewService.CustomMarkerOverlayView(
-            this._el, this['position']
+            this._el,
+            this['position'],
+            this.draggable
         );
 
         if (this.attachToParentMap) {
@@ -119,7 +122,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
 
         // set google events listeners and emits to this outputs listeners
         // TODO: I dont this this is needed
-        // this._mapService.setObjectEvents(OUTPUTS, this, 'mapObject');
+        this._mapService.setObjectEvents(OUTPUTS, this, this.overlay);
 
         // update object when input changes
         // TODO: makes sense to remove that for performance

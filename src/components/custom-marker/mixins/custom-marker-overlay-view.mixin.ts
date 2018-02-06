@@ -4,74 +4,168 @@ export function CustomMarkerOverlayView<
     TClass extends Constructor<google.maps.OverlayView>
 >(OverlayView: TClass) {
     return class extends OverlayView {
-        private htmlEl: HTMLElement;
-        private position: google.maps.LatLng;
-        private zIndex: string;
-        private visible: boolean = true;
+        private _draggable: boolean;
+        private _htmlElement: HTMLElement;
+        private _map: google.maps.Map;
+        private _moveHandler: any;
+        private _position: google.maps.LatLng;
+        private _visible: boolean = true;
+        private _zIndex: string;
+        private _dragOrigin: MouseEvent;
+        private _mouseLeaveMapListener: google.maps.MapsEventListener;
+
+        get mapElement(): Element {
+            const map = this._map;
+            return map instanceof google.maps.Map && map.getDiv();
+        }
 
         /**
          * @param args First ramameter is HTMLElement, second is
-         *             { lat: number, lng: number } or google.maps.LatLng
+         * { lat: number, lng: number } or google.maps.LatLng, third is draggable
          */
         constructor(...args: any[]) {
             super();
 
-            this.htmlEl = args[0];
+            this._htmlElement = args[0];
+            this._draggable = args[2] || false;
 
             const position = args[1];
-            this.position = position instanceof google.maps.LatLng
+            this._position = position instanceof google.maps.LatLng
                 ? position
                 : new google.maps.LatLng(+position.lat, +position.lng);
         }
 
         onAdd(): void {
-            this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
-
-            // Required for correct display inside google maps container
-            this.htmlEl.style.position = 'absolute';
+            this.getPanes().overlayMouseTarget.appendChild(this._htmlElement);
+            this._htmlElement.style.position = 'absolute';
         }
 
         draw(): void {
-            this.setPosition(this.position);
-            this.setZIndex(this.zIndex);
+            this.setPosition(this._position);
+            this.setZIndex(this._zIndex);
             this.setVisible(true);
         }
 
         onRemove(): void {
-            if (this.htmlEl.parentElement) {
-                this.htmlEl.parentElement.removeChild(this.htmlEl);
+            google.maps.event.clearInstanceListeners(this._htmlElement);
+
+            if (this._draggable) {
+                this._mouseLeaveMapListener.remove();
+            }
+
+            if (this._htmlElement.parentElement) {
+                this._htmlElement.parentElement.removeChild(this._htmlElement);
             }
         }
 
         getPosition() {
-            return this.position;
+            return this._position;
+        }
+
+        setMap(map: google.maps.Map) {
+            this._map = map;
+            super.setMap(map);
+
+            if (this._draggable) {
+                this._initDraggable();
+            }
         }
 
         setPosition = (position: google.maps.LatLng) => {
             const projection = this.getProjection();
 
             if (projection) {
-                let posPixel = projection.fromLatLngToDivPixel(this.position);
-                let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
-                let y = Math.round(posPixel.y - this.htmlEl.offsetHeight / 2);
-                this.htmlEl.style.left = x + 'px';
-                this.htmlEl.style.top = y + 'px';
+                let posPixel = projection.fromLatLngToDivPixel(this._position);
+                let x = Math.round(posPixel.x - (this._htmlElement.offsetWidth / 2));
+                let y = Math.round(posPixel.y - this._htmlElement.offsetHeight / 2);
+                this._htmlElement.style.left = x + 'px';
+                this._htmlElement.style.top = y + 'px';
             }
         }
 
         setZIndex(zIndex: string): void {
-            zIndex && (this.zIndex = zIndex);
-            this.htmlEl.style.zIndex = this.zIndex;
+            zIndex && (this._zIndex = zIndex);
+            this._htmlElement.style.zIndex = this._zIndex;
         }
 
         setVisible(visible: boolean) {
-            this.visible = visible;
-            this.htmlEl.style.display = visible ? 'inline-block' : 'none';
+            this._visible = visible;
+            this._htmlElement.style.display = visible ? 'inline-block' : 'none';
         }
 
-        // TODO: implement custom marker dragging
         getDraggable() {
-            return false;
+            return this._draggable;
+        }
+
+        private _initDraggable() {
+            const addDomListener = google.maps.event.addDomListener;
+
+            this._htmlElement.draggable = true;
+
+            this._mouseLeaveMapListener = addDomListener(
+                this.mapElement,
+                'mouseleave',
+                (event: MouseEvent) =>
+                    this._dragOrigin && this._onDragEnd()
+            );
+
+            // TODO: check if we can use event as parameter
+            addDomListener(
+                this._htmlElement,
+                'mousedown',
+                (event: MouseEvent) => {
+                    this._htmlElement.style.cursor = 'move';
+                    this._map.set('draggable', false);
+                    this._dragOrigin = event;
+
+                    this._moveHandler = addDomListener(
+                        this.mapElement,
+                        'mousemove',
+                        (event: MouseEvent) => {
+                            const origin = this._dragOrigin;
+
+                            if (!origin) {
+                                return;
+                            }
+
+                            const left = origin.clientX - event.clientX;
+                            const top = origin.clientY - event.clientY;
+                            const pos = this.getProjection()
+                                .fromLatLngToDivPixel(this._position);
+
+                            const latLng = this.getProjection()
+                                .fromDivPixelToLatLng(
+                                    new google.maps.Point(
+                                        pos.x - left,
+                                        pos.y - top
+                                    )
+                                );
+
+                            this._dragOrigin = event;
+                            this._position = latLng;
+                            this.draw();
+                        }
+                    );
+                }
+            );
+
+            addDomListener(
+                this._htmlElement,
+                'mouseup',
+                () => this._dragOrigin && this._onDragEnd()
+            );
+        }
+
+        private _onDragEnd() {
+            this._map.set('draggable', true);
+            this._dragOrigin = null;
+            this._htmlElement.style.cursor = 'default';
+            google.maps.event.removeListener(this._moveHandler);
+            google.maps.event.trigger(
+                this,
+                'dragend',
+                this._position
+            );
         }
     };
 }
