@@ -76,10 +76,8 @@ export function CustomMarkerOverlayView<
 
             if (projection) {
                 let posPixel = projection.fromLatLngToDivPixel(this._position);
-                let x = Math.round(posPixel.x - (this._htmlElement.offsetWidth / 2));
-                let y = Math.round(posPixel.y - this._htmlElement.offsetHeight / 2);
-                this._htmlElement.style.left = x + 'px';
-                this._htmlElement.style.top = y + 'px';
+                this._htmlElement.style.left = Math.round(posPixel.x) + 'px';
+                this._htmlElement.style.top = Math.round(posPixel.y) + 'px';
             }
         }
 
@@ -127,21 +125,21 @@ export function CustomMarkerOverlayView<
                                 return;
                             }
 
-                            const left = origin.clientX - event.clientX;
-                            const top = origin.clientY - event.clientY;
-                            const pos = this.getProjection()
+                            const leftOffset = origin.clientX - event.clientX;
+                            const topOffset = origin.clientY - event.clientY;
+                            const currentPositionPx = this.getProjection()
                                 .fromLatLngToDivPixel(this._position);
 
-                            const latLng = this.getProjection()
+                            const nextLatLng = this.getProjection()
                                 .fromDivPixelToLatLng(
                                     new google.maps.Point(
-                                        pos.x - left,
-                                        pos.y - top
+                                        Math.round(currentPositionPx.x - leftOffset),
+                                        Math.round(currentPositionPx.y - topOffset)
                                     )
                                 );
 
                             this._dragOrigin = event;
-                            this._position = latLng;
+                            this._position = nextLatLng;
                             this.draw();
                         }
                     );
