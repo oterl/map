@@ -66,7 +66,7 @@ export function CustomMarkerOverlayView<
             this._map = map;
             super.setMap(map);
 
-            if (this._draggable) {
+            if (this._map && this._draggable) {
                 this._initDraggable();
             }
         }
@@ -114,7 +114,6 @@ export function CustomMarkerOverlayView<
                 this._htmlElement,
                 'mousedown',
                 (event: MouseEvent) => {
-                    this._htmlElement.style.cursor = 'move';
                     this._map.set('draggable', false);
                     this._dragOrigin = event;
 
@@ -159,7 +158,6 @@ export function CustomMarkerOverlayView<
         private _onDragEnd() {
             this._map.set('draggable', true);
             this._dragOrigin = null;
-            this._htmlElement.style.cursor = 'default';
             google.maps.event.removeListener(this._moveHandler);
             google.maps.event.trigger(
                 this,
