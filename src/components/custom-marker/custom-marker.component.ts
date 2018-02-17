@@ -53,7 +53,6 @@ const OUTPUTS = [
 //     'zindexChanged'
 ];
 
-
 // TODO: should be directive
 @Component({
     selector: 'ngui-map > custom-marker',
@@ -99,7 +98,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         // this._inputChange.complete();
         // TODO not sure if this is needed
-        this.overlay.setMap(null);
+        // this.overlay.setMap(null);
         // this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this._markerOverlay);
 
         if (this.overlay) {
