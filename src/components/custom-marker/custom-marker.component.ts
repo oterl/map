@@ -69,7 +69,7 @@ export class CustomMarkerComponent implements OnInit, OnDestroy, OnChanges {
     @Output() initialized: EventEmitter<any> = new EventEmitter();
 
     @Input() draggable: boolean = false;
-    @Input() position: any;
+    @Input() position: { lat: string, lng: string };
     @Input() attachToParentMap: boolean = true;
 
     intialized$ = new ReplaySubject(1);
@@ -100,6 +100,15 @@ export class CustomMarkerComponent implements OnInit, OnDestroy, OnChanges {
 
         if (changes['draggable'] && this.overlay) {
             this.overlay.setDraggable(this.draggable);
+        }
+
+        if (changes['position'] && this.overlay) {
+            this.overlay.setPosition(
+                new google.maps.LatLng(
+                    +this.position.lat,
+                    +this.position.lng
+                )
+            );
         }
     }
 
