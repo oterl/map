@@ -9,7 +9,7 @@ import { SourceCodeService } from '../source-code.service';
         (click)="onMarkerClick($event)"
         (dragend)="onDragEnd($event)"
         [position]="position"
-        [draggable]="true">
+        [draggable]="draggable">
         <div><b>Hi, USA</b>
           <img src="http://icons.iconarchive.com/icons/custom-icon-design/2014-world-cup-flags/32/USA-icon.png" />
         </div>
@@ -17,12 +17,17 @@ import { SourceCodeService } from '../source-code.service';
       <marker position="Brampton, Canada"></marker>
     </ngui-map>
 
+    Draggable: {{ draggable }}
+
     <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <button (click)="draggable = !draggable">Toggle draggable</button>
 
     <pre class="prettyprint">{{code}}</pre>
   `
 })
 export class CustomMarkerDemoComponent {
+    draggable = false;
     position = { lat: 43.73154789999999, lng: -79.7449296972229 };
   code: string;
   constructor(public sc: SourceCodeService) {

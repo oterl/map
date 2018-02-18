@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    OnChanges,
+    SimpleChanges
+    } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import {
     debounceTime,
@@ -61,7 +65,7 @@ const OUTPUTS = [
     templateUrl: './custom-marker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomMarkerComponent implements OnInit, OnDestroy {
+export class CustomMarkerComponent implements OnInit, OnDestroy, OnChanges {
     @Output() initialized: EventEmitter<any> = new EventEmitter();
 
     @Input() draggable: boolean = false;
@@ -91,9 +95,13 @@ export class CustomMarkerComponent implements OnInit, OnDestroy {
             .subscribe(() => this._init());
     }
 
-    // ngOnChanges(changes: SimpleChanges) {
-    //     // this._inputChange.next(changes);
-    // }
+    ngOnChanges(changes: SimpleChanges) {
+        // this._inputChange.next(changes);
+
+        if (changes['draggable'] && this.overlay) {
+            this.overlay.setDraggable(this.draggable);
+        }
+    }
 
     ngOnDestroy() {
         // this._inputChange.complete();

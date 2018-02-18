@@ -7,12 +7,14 @@ export function CustomMarkerOverlayView<
         private _draggable: boolean;
         private _htmlElement: HTMLElement;
         private _map: google.maps.Map;
-        private _moveHandler: any;
         private _position: google.maps.LatLng;
         private _visible: boolean = true;
         private _zIndex: string;
         private _dragOrigin: MouseEvent;
         private _mouseLeaveMapListener: google.maps.MapsEventListener;
+        private _mouseDownListerer: google.maps.MapsEventListener;
+        private _mouseUpListener: google.maps.MapsEventListener;
+        private _moveHandler: google.maps.MapsEventListener;
 
         get mapElement(): Element {
             const map = this._map;
@@ -91,8 +93,37 @@ export function CustomMarkerOverlayView<
             this._htmlElement.style.display = visible ? 'inline-block' : 'none';
         }
 
+        setDraggable(draggable: boolean) {
+            if (this._draggable === draggable) {
+                return;
+            }
+
+            this._draggable = draggable;
+
+            if (draggable) {
+                this._initDraggable();
+                return;
+            }
+
+            this._disposeDragEvents();
+        }
+
         getDraggable() {
             return this._draggable;
+        }
+
+        private _disposeDragEvents() {
+            if (this._mouseDownListerer) {
+                this._mouseDownListerer.remove();
+            }
+
+            if (this._mouseUpListener) {
+                this._mouseUpListener.remove();
+            }
+
+            if (this._moveHandler) {
+                this._moveHandler.remove();
+            }
         }
 
         private _initDraggable() {
@@ -108,7 +139,7 @@ export function CustomMarkerOverlayView<
             );
 
             // TODO: check if we can use event as parameter
-            addDomListener(
+            this._mouseDownListerer = addDomListener(
                 this._htmlElement,
                 'mousedown',
                 (event: MouseEvent) => {
@@ -146,7 +177,7 @@ export function CustomMarkerOverlayView<
                 }
             );
 
-            addDomListener(
+            this._mouseUpListener = addDomListener(
                 this._htmlElement,
                 'mouseup',
                 () => this._dragOrigin && this._onDragEnd()
@@ -156,7 +187,7 @@ export function CustomMarkerOverlayView<
         private _onDragEnd() {
             this._map.set('draggable', true);
             this._dragOrigin = null;
-            google.maps.event.removeListener(this._moveHandler);
+            this._moveHandler.remove();
             google.maps.event.trigger(
                 this,
                 'dragend',
