@@ -74,6 +74,7 @@ export function CustomMarkerOverlayView<
         }
 
         setPosition = (position: google.maps.LatLng) => {
+            this._position = position;
             const projection = this.getProjection();
 
             if (projection) {
