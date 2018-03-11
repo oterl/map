@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-    first,
     map,
     publishReplay,
-    refCount,
-    tap
+    refCount
     } from 'rxjs/operators';
 import { loadScript } from '../services/util';
 

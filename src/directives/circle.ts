@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = [
   'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
@@ -40,7 +40,7 @@ export class Circle extends BaseMapDirective {
           let latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
           this.mapObject.setCenter(latLng);
         },
-        error => {
+        () => {
           console.error('ngui-map, error in finding the current position');
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
@@ -51,7 +51,7 @@ export class Circle extends BaseMapDirective {
           console.log('setting circle center from address', this['center']);
           this.mapObject.setCenter(results[0].geometry.location);
         },
-        error => {
+        () => {
           console.error('ngui-map, error in finding location from', this['center']);
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }

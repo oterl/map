@@ -1,16 +1,12 @@
 import {
-    AfterContentChecked,
-    AfterContentInit,
     ContentChildren,
     Directive,
     EventEmitter,
     Input,
     OnDestroy,
     OnInit,
-    Output,
     QueryList
     } from '@angular/core';
-import { prop as Rprop } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest as combine } from 'rxjs/observable/combineLatest';
 import {

@@ -220,7 +220,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.map.setCenter(latLng);
         },
-        error => {
+        () => {
           console.error('ngui-map: Error finding the current position');
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
@@ -232,7 +232,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
           console.log('setting map center from address', this['center']);
           this.map.setCenter(results[0].geometry.location);
         },
-        error => {
+        () => {
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         });
     }

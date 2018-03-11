@@ -1,7 +1,6 @@
 import { isNil as isNilR } from 'ramda';
 import { Observer } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
-import { window } from 'rxjs/operator/window';
 
 /**
  * return json string from json-like string

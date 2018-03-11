@@ -8,7 +8,6 @@ export function CustomMarkerOverlayView<
         private _htmlElement: HTMLElement;
         private _map: google.maps.Map;
         private _position: google.maps.LatLng;
-        private _visible: boolean = true;
         private _zIndex: string;
         private _dragOrigin: MouseEvent;
         private _mouseLeaveMapListener: google.maps.MapsEventListener;
@@ -90,7 +89,6 @@ export function CustomMarkerOverlayView<
         }
 
         setVisible(visible: boolean) {
-            this._visible = visible;
             this._htmlElement.style.display = visible ? 'inline-block' : 'none';
         }
 
@@ -135,8 +133,7 @@ export function CustomMarkerOverlayView<
             this._mouseLeaveMapListener = addDomListener(
                 this.mapElement,
                 'mouseleave',
-                (event: MouseEvent) =>
-                    this._dragOrigin && this._onDragEnd()
+                () => this._dragOrigin && this._onDragEnd()
             );
 
             // TODO: check if we can use event as parameter

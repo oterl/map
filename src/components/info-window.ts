@@ -50,7 +50,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(() => this.initialize());
     }
   }
 

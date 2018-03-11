@@ -1,3 +1,6 @@
+import { NgMapApiLoader } from '../services/api-loader';
+import { OptionBuilder } from '../services/option-builder';
+import { missingLibraryError } from '../services/util';
 import {
   Input,
   Output,
@@ -6,9 +9,6 @@ import {
   ElementRef,
 } from '@angular/core';
 
-import { NgMapApiLoader } from '../services/api-loader';
-import { OptionBuilder } from '../services/option-builder';
-import { missingLibraryError } from '../services/util';
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -47,7 +47,7 @@ export class PlacesAutoComplete {
       this.objectOptions
     );
 
-    this.autocomplete.addListener('place_changed', place => {
+    this.autocomplete.addListener('place_changed', () => {
       this.place_changed.emit(this.autocomplete.getPlace());
     });
 

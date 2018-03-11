@@ -1,7 +1,6 @@
 import {
     Inject,
     Injectable,
-    NgZone,
     OnDestroy,
     Optional
     } from '@angular/core';

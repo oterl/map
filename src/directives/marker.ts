@@ -1,7 +1,10 @@
-import {Directive, OnInit} from '@angular/core';
-
-import { BaseMapDirective } from './base-map-directive';
+import {
+    Directive,
+    OnInit
+    } from '@angular/core';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { BaseMapDirective } from './base-map-directive';
+
 
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
@@ -34,7 +37,7 @@ export class Marker extends BaseMapDirective implements OnInit {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(() => this.initialize());
     }
   }
 
@@ -51,7 +54,7 @@ export class Marker extends BaseMapDirective implements OnInit {
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.mapObject.setPosition(latLng);
         },
-        error => {
+        () => {
           console.error('ngui-map, error finding the current location');
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
@@ -62,7 +65,7 @@ export class Marker extends BaseMapDirective implements OnInit {
           console.log('setting marker position from address', this['position']);
           this.mapObject.setPosition(results[0].geometry.location);
         },
-        error => {
+        () => {
           console.error('ngui-map, error finding the location from', this['position']);
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
