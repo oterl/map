@@ -29,7 +29,6 @@ export class Marker extends BaseMapDirective implements OnInit {
 
   constructor(private nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'Marker', INPUTS, OUTPUTS);
-    console.log('marker constructor', 9999999 );
   }
 
   // Initialize this map object when map is ready
@@ -50,23 +49,19 @@ export class Marker extends BaseMapDirective implements OnInit {
     if (!this['position']) {
       this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(
         position => {
-          console.log('setting marker position from current location');
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.mapObject.setPosition(latLng);
         },
         () => {
-          console.error('ngui-map, error finding the current location');
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
       ));
     } else if (typeof this['position'] === 'string') {
       this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({address: this['position']}).subscribe(
         results => {
-          console.log('setting marker position from address', this['position']);
           this.mapObject.setPosition(results[0].geometry.location);
         },
         () => {
-          console.error('ngui-map, error finding the location from', this['position']);
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
       ));
