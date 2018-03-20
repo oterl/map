@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { getJSON, IJson } from './util';
+import {
+    getJSON,
+    IJson
+    } from './util';
 
 /**
  * change any object to google object options
@@ -217,7 +220,7 @@ export class OptionBuilder {
   }
 
   private getMarkerIcon(input: any): any {
-    let output = input;
+    let output = {...input};
 
     if (('' + output.path).match(/^[A-Z_]+$/)) {
       output.path = google.maps.SymbolPath[output.path];
