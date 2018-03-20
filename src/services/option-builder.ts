@@ -222,18 +222,18 @@ export class OptionBuilder {
   private getMarkerIcon(input: any): any {
     let output = {...input};
 
-    if (('' + output.path).match(/^[A-Z_]+$/)) {
-      output.path = google.maps.SymbolPath[output.path];
-    }
+    // if (('' + output.path).match(/^[A-Z_]+$/)) {
+    //   output.path = google.maps.SymbolPath[output.path];
+    // }
 
-    for (let key in output) {
-      let arr = output[key];
-      if (key === 'anchor' || key === 'origin' || key === 'labelOrigin') {
-        output[key] = new google.maps.Point(arr[0], arr[1]);
-    } else if (key === 'size' || key === 'scaledSize') {
-        output[key] = new google.maps.Size(arr[0], arr[1]);
-      }
-    }
+    // for (let key in output) {
+    //   let arr = output[key];
+    //   if (key === 'anchor' || key === 'origin' || key === 'labelOrigin') {
+    //     output[key] = new google.maps.Point(arr[0], arr[1]);
+    // } else if (key === 'size' || key === 'scaledSize') {
+    //     output[key] = new google.maps.Size(arr[0], arr[1]);
+    //   }
+    // }
 
     return output;
   }
