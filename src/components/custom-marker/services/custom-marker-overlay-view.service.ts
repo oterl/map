@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-    Observable,
-    ReplaySubject
-    } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import {
     filter,
     first
     } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { MapLoadedService } from '../../../services/map-loaded.service';
 import { CustomMarkerOverlayView } from '../mixins/custom-marker-overlay-view.mixin';
 

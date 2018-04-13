@@ -1,6 +1,7 @@
 import { isNil as isNilR } from 'ramda';
-import { Observer } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { Observer } from 'rxjs/Observer';
 
 /**
  * return json string from json-like string
@@ -110,7 +111,7 @@ export const loadScript = (
             Observable.throw(new Error('Can not determine state of script loading'));
         }
 
-        return Observable.of(scriptState);
+        return of(scriptState);
     }
 
     // Set target script as not loaded

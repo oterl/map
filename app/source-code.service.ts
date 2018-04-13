@@ -1,7 +1,19 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Plunker} from 'create-plunker';
-import 'rxjs/add/operator/map';
+import { Injectable } from '@angular/core';
+import { NgModule } from '@angular/core';
+import {
+    FormsModule,
+    ReactiveFormsModule
+    } from '@angular/forms';
+import {
+    Http,
+    Response
+    } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { NguiMapModule } from '@ngui/map';
+import { Plunker } from 'create-plunker';
+import { map } from 'rxjs/operators';
+import { AppComponent } from './app.component';
 
 @Injectable()
 export class SourceCodeService {
@@ -18,8 +30,8 @@ export class SourceCodeService {
       replace(/^-/, '');
     let url = `${urlPrefix}/${fileName}`;
 
-    return this.http.get(url).
-      map((res: Response) => appComponentTsCode(res.text()));
+    return this.http.get(url)
+        .pipe(map((res: Response) => appComponentTsCode(res.text())));
   }
 
   plnkr(code: string) {
@@ -63,16 +75,10 @@ function tsconfigJsonCode() {
 function mainTsCode() {
   return `
 // The browser platform with a compiler
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { NgModule }       from '@angular/core';
-import { BrowserModule }  from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule }    from "@angular/forms";
 
-import { AppComponent }   from './app.component';
 
 //noinspection TypeScriptCheckImport
-import { NguiMapModule } from '@ngui/map';
 
 @NgModule({
   imports: [

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({
@@ -39,8 +39,7 @@ export class MarkerNgForComponent {
     }
 
     showMarkersFromObservable() {
-        Observable
-            .of(this.getRandomMarkers())
+        of(this.getRandomMarkers())
             .subscribe( positions => {
                 this.positions = positions;
             });

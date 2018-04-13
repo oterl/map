@@ -4,7 +4,7 @@ import {
     OnDestroy,
     Optional
     } from '@angular/core';
-import { first } from 'rxjs/operator/first';
+import { first } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { NG_MAP_CONFIG_TOKEN } from './config';
 import {

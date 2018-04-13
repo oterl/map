@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewContainerRef
     } from '@angular/core';
-import { debounceTime } from 'rxjs/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { MapService } from '../services/map.service';
 import { NguiMapComponent } from './ngui-map.component';

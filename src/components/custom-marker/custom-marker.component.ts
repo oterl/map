@@ -3,8 +3,8 @@ import {
     OnChanges,
     SimpleChanges
     } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { MapService } from '../../services/map.service';
 import { CustomMarkerOverlayViewService } from '../custom-marker/services/custom-marker-overlay-view.service';

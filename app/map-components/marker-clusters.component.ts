@@ -2,15 +2,15 @@ import {
     ChangeDetectionStrategy,
     Component
     } from '@angular/core';
-import { Subject } from 'rxjs';
-import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import {
     delay,
     map,
     mapTo,
     merge
     } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({
@@ -59,8 +59,7 @@ import { SourceCodeService } from '../source-code.service';
 })
 export class MarkerClustersComponent {
     reg = new Subject();
-    public positions = Observable
-        .of(this.getRandomMarkers()).pipe(delay(2000))
+    public positions = of(this.getRandomMarkers()).pipe(delay(2000))
         .pipe(merge(this.reg.pipe(map(() => this.getRandomMarkers()))));
 
     code: string;
