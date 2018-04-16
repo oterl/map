@@ -202,7 +202,8 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
       });
 
       // update map when input changes
-      debounceTime.call(this.inputChanges$, 1000)
+      this.inputChanges$
+        .pipe(debounceTime(1000))
         .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
 
       if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {

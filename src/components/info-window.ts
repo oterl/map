@@ -75,8 +75,9 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.nguiMap.setObjectEvents(OUTPUTS, this, this.infoWindow);
 
     // update object when input changes
-    debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.infoWindow, changes));
+    this.inputChanges$
+        .pipe(debounceTime(1000))
+        .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.infoWindow, changes));
 
     this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
     this.initialized$.emit(this.infoWindow);
