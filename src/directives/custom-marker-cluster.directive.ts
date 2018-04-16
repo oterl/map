@@ -9,6 +9,7 @@ import {
     } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest as combine } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import {
     combineLatest,
     filter,
@@ -157,7 +158,7 @@ export class CustomMarkerClusterDirective implements OnInit, OnDestroy {
 
     private _updateMarkers() {
         (this._customMarkers.length === 0
-            ? Observable.of([])
+            ? of([])
             : combine(
                 ...this._customMarkers.map(
                     (customMarkerCmp: CustomMarkerComponent) =>
