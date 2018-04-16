@@ -7,7 +7,6 @@ import {
     OnInit,
     QueryList
     } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { combineLatest as combine } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import {
