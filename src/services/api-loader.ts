@@ -4,7 +4,6 @@ import {
     OnDestroy,
     Optional
     } from '@angular/core';
-import { first } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { NG_MAP_CONFIG_TOKEN } from './config';
 import {
@@ -17,7 +16,7 @@ type MapLoadConfig = {
 };
 
 export abstract class NgMapApiLoader implements OnDestroy {
-    api$: ReplaySubject<any> = first.call(new ReplaySubject(1));
+    api$: ReplaySubject<any> = new ReplaySubject(1);
 
     private readonly defaultConf = {
         apiUrl: 'https://maps.google.com/maps/api/js'
