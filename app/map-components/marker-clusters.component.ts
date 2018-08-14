@@ -2,15 +2,12 @@ import {
     ChangeDetectionStrategy,
     Component
     } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of ,  Subject } from 'rxjs';
 import {
     delay,
     map,
-    mapTo,
     merge
     } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({

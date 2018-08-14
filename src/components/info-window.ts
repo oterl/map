@@ -11,7 +11,7 @@ import {
     ViewContainerRef
     } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { MapService } from '../services/map.service';
 import { NguiMapComponent } from './ngui-map.component';
 

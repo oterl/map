@@ -12,7 +12,7 @@ import {
     ViewEncapsulation
     } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { NgMapApiLoader } from '../services/api-loader';
 import { GeoCoder } from '../services/geo-coder';
 import { MapLoadedService } from '../services/map-loaded.service';

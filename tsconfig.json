@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "keyofStringsOnly": true,
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
@@ -22,7 +23,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "app/**/*.ts"
+    "app/**/*.ts",
+    "node_modules/@ngui"
   ],
   "exclude": [
     "node_modules",

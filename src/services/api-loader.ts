@@ -4,7 +4,7 @@ import {
     OnDestroy,
     Optional
     } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { NG_MAP_CONFIG_TOKEN } from './config';
 import {
     isMapsApiLoaded,

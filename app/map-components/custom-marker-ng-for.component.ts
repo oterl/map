@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { SourceCodeService } from '../source-code.service';
 
 @Component({

@@ -1,7 +1,6 @@
+
+import {throwError as observableThrowError,  Observable ,  of ,  Observer } from 'rxjs';
 import { isNil as isNilR } from 'ramda';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { Observer } from 'rxjs/Observer';
 
 /**
  * return json string from json-like string
@@ -96,7 +95,7 @@ export const loadScript = (
     loadedObjKey = 'loadedScripts'
 ): Observable<any> => {
     if (typeof window === 'undefined') {
-        return Observable.throw(
+        return observableThrowError(
             new Error('"window" has to be defined to load script')
         );
     }
@@ -108,7 +107,7 @@ export const loadScript = (
         const scriptState = storage[scriptId];
 
         if (isNilR(scriptState)) {
-            Observable.throw(new Error('Can not determine state of script loading'));
+            observableThrowError(new Error('Can not determine state of script loading'));
         }
 
         return of(scriptState);

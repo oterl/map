@@ -4,8 +4,7 @@ import {
     SimpleChanges
     } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Subject } from 'rxjs/Subject';
+import { ReplaySubject ,  Subject } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { CustomMarkerOverlayViewService } from '../custom-marker/services/custom-marker-overlay-view.service';
 import { NguiMapComponent } from '../ngui-map.component';
