@@ -4,16 +4,16 @@ export function CustomMarkerOverlayView<
     TClass extends Constructor<google.maps.OverlayView>
 >(OverlayView: TClass) {
     return class extends OverlayView {
-        private _draggable: boolean;
-        private _htmlElement: HTMLElement;
-        private _map: google.maps.Map;
-        private _position: google.maps.LatLng;
-        private _zIndex: string;
-        private _dragOrigin: MouseEvent;
-        private _mouseLeaveMapListener: google.maps.MapsEventListener;
-        private _mouseDownListerer: google.maps.MapsEventListener;
-        private _mouseUpListener: google.maps.MapsEventListener;
-        private _moveHandler: google.maps.MapsEventListener;
+        _draggable: boolean;
+        _htmlElement: HTMLElement;
+        _map: google.maps.Map;
+        _position: google.maps.LatLng;
+        _zIndex: string;
+        _dragOrigin: MouseEvent;
+        _mouseLeaveMapListener: google.maps.MapsEventListener;
+        _mouseDownListerer: google.maps.MapsEventListener;
+        _mouseUpListener: google.maps.MapsEventListener;
+        _moveHandler: google.maps.MapsEventListener;
 
         get mapElement(): Element {
             const map = this._map;
@@ -111,7 +111,7 @@ export function CustomMarkerOverlayView<
             return this._draggable;
         }
 
-        private _disposeDragEvents() {
+        _disposeDragEvents() {
             if (this._mouseDownListerer) {
                 this._mouseDownListerer.remove();
             }
@@ -125,7 +125,7 @@ export function CustomMarkerOverlayView<
             }
         }
 
-        private _initDraggable() {
+        _initDraggable() {
             const addDomListener = google.maps.event.addDomListener;
 
             this._htmlElement.draggable = true;
@@ -182,7 +182,7 @@ export function CustomMarkerOverlayView<
             );
         }
 
-        private _onDragEnd() {
+        _onDragEnd() {
             this._map.set('draggable', true);
             this._dragOrigin = null;
             this._moveHandler.remove();

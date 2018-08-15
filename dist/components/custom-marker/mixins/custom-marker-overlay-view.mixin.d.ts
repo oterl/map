@@ -1,0 +1,43 @@
+/// <reference types="googlemaps" />
+declare type Constructor<T> = new (...args: any[]) => T;
+export declare function CustomMarkerOverlayView<TClass extends Constructor<google.maps.OverlayView>>(OverlayView: TClass): {
+    new (...args: any[]): {
+        _draggable: boolean;
+        _htmlElement: HTMLElement;
+        _map: google.maps.Map;
+        _position: google.maps.LatLng;
+        _zIndex: string;
+        _dragOrigin: MouseEvent;
+        _mouseLeaveMapListener: google.maps.MapsEventListener;
+        _mouseDownListerer: google.maps.MapsEventListener;
+        _mouseUpListener: google.maps.MapsEventListener;
+        _moveHandler: google.maps.MapsEventListener;
+        readonly mapElement: Element;
+        onAdd(): void;
+        draw(): void;
+        onRemove(): void;
+        getPosition(): google.maps.LatLng;
+        setMap(map: google.maps.Map): void;
+        setPosition: (position: google.maps.LatLng) => void;
+        setZIndex(zIndex: string): void;
+        setVisible(visible: boolean): void;
+        setDraggable(draggable: boolean): void;
+        getDraggable(): boolean;
+        _disposeDragEvents(): void;
+        _initDraggable(): void;
+        _onDragEnd(): void;
+        getMap(): google.maps.Map | google.maps.StreetViewPanorama;
+        getPanes(): google.maps.MapPanes;
+        getProjection(): google.maps.MapCanvasProjection;
+        addListener(eventName: string, handler: (...args: any[]) => void): google.maps.MapsEventListener;
+        bindTo(key: string, target: google.maps.MVCObject, targetKey?: string, noNotify?: boolean): void;
+        changed(key: string): void;
+        get(key: string): any;
+        notify(key: string): void;
+        set(key: string, value: any): void;
+        setValues(values: any): void;
+        unbind(key: string): void;
+        unbindAll(): void;
+    };
+} & TClass;
+export {};
