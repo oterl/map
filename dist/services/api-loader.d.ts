@@ -1,5 +1,8 @@
 import { OnDestroy } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import {
+    ReplaySubject,
+    Subscription
+} from 'rxjs';
 declare type MapLoadConfig = {
     apiUrl: string;
 };
@@ -14,7 +17,7 @@ export declare abstract class NgMapApiLoader implements OnDestroy {
 export declare class NgMapAsyncApiLoader extends NgMapApiLoader {
     readonly scriptId: string;
     constructor(config: any);
-    load(): import("../../../../../../../../../Users/oleksandr_terletskyy/Desktop/map/node_modules/rxjs/internal/Subscription").Subscription;
+    load(): Subscription;
     private apiLoaded;
 }
 export {};
